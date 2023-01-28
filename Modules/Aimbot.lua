@@ -1,7 +1,7 @@
 --// Cache
 
 local select = select
-local pcall, getgenv, next, setmetatable, Vector2new, CFramenew, Color3fromRGB, mathclamp, type, mousemoverel = select(1, pcall, getgenv, next, setmetatable, Vector2.new, CFrame.new, Color3.fromRGB, math.clamp, type, mousemoverel or (Input and Input.MouseMove))
+local pcall, getgenv, next, setmetatable, Vector2new, CFramenew, Color3fromRGB, mathclamp, mousemoverel = select(1, pcall, getgenv, next, setmetatable, Vector2.new, CFrame.new, Color3.fromRGB, math.clamp, mousemoverel or (Input and Input.MouseMove))
 
 --// Preventing Multiple Processes
 
