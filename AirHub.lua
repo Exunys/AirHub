@@ -1,3 +1,12 @@
+--[[
+
+	AirHub by Exunys © CC0 1.0 Universal (2023)
+
+	https://github.com/Exunys
+
+]]
+
+
 --// Cache
 
 local loadstring, game, getgenv, setclipboard, tablefind, UserInputService = loadstring, game, getgenv, setclipboard, table.find, game:GetService("UserInputService")
