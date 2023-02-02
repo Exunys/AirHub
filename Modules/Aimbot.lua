@@ -8,8 +8,7 @@
 
 --// Cache
 
-local select = select
-local pcall, getgenv, next, setmetatable, Vector2new, CFramenew, Color3fromRGB, mathclamp, mousemoverel = select(1, pcall, getgenv, next, setmetatable, Vector2.new, CFrame.new, Color3.fromRGB, math.clamp, mousemoverel or (Input and Input.MouseMove))
+local pcall, getgenv, next, setmetatable, Vector2new, CFramenew, Color3fromRGB, mathclamp, mousemoverel = pcall, getgenv, next, setmetatable, Vector2.new, CFrame.new, Color3.fromRGB, math.clamp, mousemoverel or (Input and Input.MouseMove)
 
 --// Preventing Multiple Processes
 
@@ -130,9 +129,9 @@ local function Load()
 
 			if Environment.Locked then
 				if Environment.Settings.ThirdPerson then
-					Environment.Settings.ThirdPersonSensitivity = mathclamp(Environment.Settings.ThirdPersonSensitivity, 0.1, 5)
-
 					local Vector = Camera:WorldToViewportPoint(Environment.Locked.Character[Environment.Settings.LockPart].Position)
+
+					Environment.Settings.ThirdPersonSensitivity = mathclamp(Environment.Settings.ThirdPersonSensitivity, 0.1, 5)
 					mousemoverel((Vector.X - UserInputService:GetMouseLocation().X) * Environment.Settings.ThirdPersonSensitivity, (Vector.Y - UserInputService:GetMouseLocation().Y) * Environment.Settings.ThirdPersonSensitivity)
 				else
 					if Environment.Settings.Sensitivity > 0 then
@@ -143,8 +142,7 @@ local function Load()
 					end
 				end
 
-			Environment.FOVCircle.Color = Environment.FOVSettings.LockedColor
-
+				Environment.FOVCircle.Color = Environment.FOVSettings.LockedColor
 			end
 		end
 	end)
@@ -253,7 +251,7 @@ function Environment.Functions:ResetSettings()
 end
 
 setmetatable(Environment.Functions, {
-    __newindex = warn
+	__newindex = warn
 })
 
 --// Load
