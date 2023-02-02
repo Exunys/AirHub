@@ -604,7 +604,7 @@ local Visuals = {
 				Environment.Crosshair.Parts.LeftLine.Transparency = Environment.Crosshair.Settings.Transparency
 
 				Environment.Crosshair.Parts.LeftLine.From = Vector2new(AxisX + Environment.Crosshair.Settings.GapSize, AxisY)
-				Environment.Crosshair.Parts.LeftLine.To = Vector2new(AxisX + Environment.Crosshair.Settings.Size, AxisY)
+				Environment.Crosshair.Parts.LeftLine.To = Vector2new(AxisX + Environment.Crosshair.Settings.Size - Environment.Crosshair.Settings.GapSize, AxisY)
 
 				--// Right Line
 
@@ -624,7 +624,7 @@ local Visuals = {
 				Environment.Crosshair.Parts.TopLine.Transparency = Environment.Crosshair.Settings.Transparency
 
 				Environment.Crosshair.Parts.TopLine.From = Vector2new(AxisX, AxisY + Environment.Crosshair.Settings.GapSize)
-				Environment.Crosshair.Parts.TopLine.To = Vector2new(AxisX, AxisY + Environment.Crosshair.Settings.Size)
+				Environment.Crosshair.Parts.TopLine.To = Vector2new(AxisX, AxisY + Environment.Crosshair.Settings.Size - Environment.Crosshair.Settings.GapSize)
 
 				--// Bottom Line
 
@@ -634,7 +634,7 @@ local Visuals = {
 				Environment.Crosshair.Parts.BottomLine.Transparency = Environment.Crosshair.Settings.Transparency
 
 				Environment.Crosshair.Parts.BottomLine.From = Vector2new(AxisX, AxisY - Environment.Crosshair.Settings.GapSize)
-				Environment.Crosshair.Parts.BottomLine.To = Vector2new(AxisX, AxisY - Environment.Crosshair.Settings.Size)
+				Environment.Crosshair.Parts.BottomLine.To = Vector2new(AxisX, AxisY - Environment.Crosshair.Settings.Size - Environment.Crosshair.Settings.GapSize)
 
 				--// Center Dot
 
