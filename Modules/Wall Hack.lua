@@ -88,7 +88,7 @@ Environment.Visuals = {
 	},
 
 	HeadDotSettings = {
-		Enabled = false,
+		Enabled = true,
 		Color = Color3fromRGB(255, 255, 255),
 		Transparency = 0.5,
 		Thickness = 1,
@@ -110,7 +110,8 @@ Environment.Crosshair = {
 		CenterDotColor = Color3fromRGB(0, 255, 0),
 		CenterDotSize = 1,
 		CenterDotTransparency = 1,
-		CenterDotFilled = true
+		CenterDotFilled = true,
+		CenterDotThickness = 1
 	},
 
 	Parts = {
@@ -643,6 +644,7 @@ local Visuals = {
 				Environment.Crosshair.Parts.CenterDot.Radius = Environment.Crosshair.Settings.CenterDotSize
 				Environment.Crosshair.Parts.CenterDot.Transparency = Environment.Crosshair.Settings.CenterDotTransparency
 				Environment.Crosshair.Parts.CenterDot.Filled = Environment.Crosshair.Settings.CenterDotFilled
+				Environment.Crosshair.Parts.CenterDot.Thickness = Environment.Crosshair.Settings.CenterDotThickness
 
 				Environment.Crosshair.Parts.CenterDot.Position = Vector2new(AxisX, AxisY)
 			end
@@ -834,7 +836,8 @@ function Environment.Functions:ResetSettings()
 		CenterDotColor = Color3fromRGB(0, 255, 0),
 		CenterDotSize = 1,
 		CenterDotTransparency = 1,
-		CenterDotFilled = true
+		CenterDotFilled = true,
+		CenterDotThickness = 1
 	}
 
 	Environment.Settings = {
