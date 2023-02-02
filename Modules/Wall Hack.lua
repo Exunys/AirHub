@@ -1,3 +1,11 @@
+--[[
+
+    TODO:
+
+    - Fix some Service Connections not Disconnecting upon unloading (Render object destroyed errors... [line:594])
+
+]]
+
 --// Cache
 
 local next, tostring, pcall, getgenv, setmetatable, mathfloor, mathabs, wait = next, tostring, pcall, getgenv, setmetatable, math.floor, math.abs, task.wait
@@ -664,7 +672,6 @@ local function Wrap(Player)
 			Visuals.AddBox(Player)
 			Visuals.AddHeadDot(Player)
 			Visuals.AddChams(Player)
-			Visuals.AddCrosshair()
 		end
 	end
 end
@@ -708,6 +715,8 @@ local function UnWrap(Player)
 end
 
 local function Load()
+	Visuals.AddCrosshair()
+
 	ServiceConnections.PlayerAddedConnection = Players.PlayerAdded:Connect(Wrap)
 	ServiceConnections.PlayerRemovingConnection = Players.PlayerRemoving:Connect(UnWrap)
 
