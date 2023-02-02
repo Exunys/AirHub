@@ -1,11 +1,3 @@
---[[
-
-    TODO:
-
-    - Fix some Service Connections not Disconnecting upon unloading (Render object destroyed errors... [line:594])
-
-]]
-
 --// Cache
 
 local next, tostring, pcall, getgenv, setmetatable, mathfloor, mathabs, wait = next, tostring, pcall, getgenv, setmetatable, math.floor, math.abs, task.wait
