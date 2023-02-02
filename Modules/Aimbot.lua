@@ -1,3 +1,11 @@
+--[[
+
+	AirHub by Exunys © CC0 1.0 Universal (2023)
+
+	https://github.com/Exunys
+
+]]
+
 --// Cache
 
 local select = select
@@ -6,13 +14,13 @@ local pcall, getgenv, next, setmetatable, Vector2new, CFramenew, Color3fromRGB, 
 --// Preventing Multiple Processes
 
 pcall(function()
-	getgenv().Aimbot.Functions:Exit()
+	getgenv().AirHub.Aimbot.Functions:Exit()
 end)
 
 --// Environment
 
-getgenv().Aimbot = {}
-local Environment = getgenv().Aimbot
+getgenv().AirHub.Aimbot = {}
+local Environment = getgenv().AirHub.Aimbot
 
 --// Services
 
@@ -30,7 +38,7 @@ local RequiredDistance, Typing, Running, Animation, ServiceConnections = 2000, f
 --// Script Settings
 
 Environment.Settings = {
-	Enabled = true,
+	Enabled = false,
 	TeamCheck = false,
 	AliveCheck = true,
 	WallCheck = false, -- Laggy
@@ -203,8 +211,8 @@ function Environment.Functions:Exit()
 
 	if Environment.FOVCircle.Remove then Environment.FOVCircle:Remove() end
 
-	getgenv().Aimbot.Functions = nil
-	getgenv().Aimbot = nil
+	getgenv().AirHub.Aimbot.Functions = nil
+	getgenv().AirHub.Aimbot = nil
 
 	Load = nil; GetClosestPlayer = nil; CancelLock = nil
 end
@@ -219,7 +227,7 @@ end
 
 function Environment.Functions:ResetSettings()
 	Environment.Settings = {
-		Enabled = true,
+		Enabled = false,
 		TeamCheck = false,
 		AliveCheck = true,
 		WallCheck = false,
