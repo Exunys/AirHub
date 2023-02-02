@@ -6,7 +6,6 @@
 
 ]]
 
-
 --// Cache
 
 local loadstring, game, getgenv, setclipboard, tablefind, UserInputService = loadstring, game, getgenv, setclipboard, table.find, game:GetService("UserInputService")
