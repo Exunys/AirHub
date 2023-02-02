@@ -31,7 +31,7 @@ local WorldToViewportPoint, Vector2new, Vector3new, CFramenew, Drawingnew, Color
 --// Script Settings
 
 Environment.Settings = {
-	Enabled = true,
+	Enabled = false,
 	TeamCheck = false,
 	AliveCheck = true
 }
@@ -43,7 +43,6 @@ Environment.Visuals = {
 		Enabled = true,
 		TextColor = Color3fromRGB(255, 255, 255),
 		TextSize = 14,
-		Center = true,
 		Outline = true,
 		OutlineColor = Color3fromRGB(0, 0, 0),
 		TextTransparency = 0.7,
@@ -72,7 +71,7 @@ Environment.Visuals = {
 	},
 
 	ChamsSettings = {
-		Enabled = false,
+		Enabled = false, -- Maintenence... (Broken & laggy)
 		Color = Color3fromRGB(255, 255, 255),
 		Transparency = 0.5,
 		Thickness = 0,
@@ -81,7 +80,7 @@ Environment.Visuals = {
 	},
 
 	HeadDotSettings = {
-		Enabled = true,
+		Enabled = false,
 		Color = Color3fromRGB(255, 255, 255),
 		Transparency = 0.5,
 		Thickness = 1,
@@ -92,7 +91,7 @@ Environment.Visuals = {
 
 Environment.Crosshair = {
 	Settings = {
-		Enabled = true,
+		Enabled = false,
 		Type = 1, -- 1 - Mouse; 2 - Center
 		Size = 12,
 		Thickness = 1,
@@ -327,8 +326,8 @@ local Visuals = {
 					PlayerTable.ESP.Visible = Checks.Alive and Checks.Team and true or false
 
 					if PlayerTable.ESP.Visible then
+						PlayerTable.ESP.Center = true
 						PlayerTable.ESP.Size = Environment.Visuals.ESPSettings.TextSize
-						PlayerTable.ESP.Center = Environment.Visuals.ESPSettings.Center
 						PlayerTable.ESP.Outline = Environment.Visuals.ESPSettings.Outline
 						PlayerTable.ESP.OutlineColor = Environment.Visuals.ESPSettings.OutlineColor
 						PlayerTable.ESP.Color = Environment.Visuals.ESPSettings.TextColor
@@ -607,7 +606,7 @@ local Visuals = {
 				Environment.Crosshair.Parts.RightLine.Transparency = Environment.Crosshair.Settings.Transparency
 
 				Environment.Crosshair.Parts.RightLine.From = Vector2new(AxisX - Environment.Crosshair.Settings.GapSize, AxisY)
-				Environment.Crosshair.Parts.RightLine.To = Vector2new(AxisX - Environment.Crosshair.Settings.Size, AxisY)
+				Environment.Crosshair.Parts.RightLine.To = Vector2new(AxisX - Environment.Crosshair.Settings.Size - Environment.Crosshair.Settings.GapSize, AxisY)
 
 				--// Top Line
 
