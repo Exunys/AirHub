@@ -647,6 +647,12 @@ local Visuals = {
 				Environment.Crosshair.Parts.CenterDot.Thickness = Environment.Crosshair.Settings.CenterDotThickness
 
 				Environment.Crosshair.Parts.CenterDot.Position = Vector2new(AxisX, AxisY)
+			else
+				Environment.Crosshair.Parts.LeftLine.Visible = false
+				Environment.Crosshair.Parts.RightLine.Visible = false
+				Environment.Crosshair.Parts.TopLine.Visible = false
+				Environment.Crosshair.Parts.BottomLine.Visible = false
+				Environment.Crosshair.Parts.CenterDot.Visible = false
 			end
 		end)
 	end
