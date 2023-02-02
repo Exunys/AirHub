@@ -1,3 +1,11 @@
+--[[
+
+	Wall Hack Module [AirHub] by Exunys © CC0 1.0 Universal (2023)
+
+	https://github.com/Exunys
+
+]]
+
 --// Cache
 
 local next, tostring, pcall, getgenv, setmetatable, mathfloor, mathabs, wait = next, tostring, pcall, getgenv, setmetatable, math.floor, math.abs, task.wait
@@ -5,13 +13,13 @@ local next, tostring, pcall, getgenv, setmetatable, mathfloor, mathabs, wait = n
 --// Preventing Multiple Processes
 
 pcall(function()
-	getgenv().WallHack.Functions:Exit()
+	getgenv().AirHub.WallHack.Functions:Exit()
 end)
 
 --// Environment
 
-getgenv().WallHack = {}
-local Environment = getgenv().WallHack
+getgenv().AirHub.WallHack = {}
+local Environment = getgenv().AirHub.WallHack
 
 --// Services
 
@@ -741,8 +749,8 @@ function Environment.Functions:Exit()
 		end
 	end
 
-	getgenv().WallHack.Functions = nil
-	getgenv().WallHack = nil
+	getgenv().AirHub.WallHack.Functions = nil
+	getgenv().AirHub.WallHack = nil
 
 	Load = nil; GetPlayerTable = nil; AssignRigType = nil; Visuals = nil; Wrap = nil; UnWrap = nil
 end
@@ -815,7 +823,7 @@ function Environment.Functions:ResetSettings()
 	}
 
 	Environment.Crosshair.Settings = {
-		Enabled = true,
+		Enabled = false,
 		Type = 1, -- 1 - Mouse; 2 - Center
 		Size = 12,
 		Thickness = 1,
@@ -830,7 +838,7 @@ function Environment.Functions:ResetSettings()
 	}
 
 	Environment.Settings = {
-		Enabled = true,
+		Enabled = false,
 		TeamCheck = false,
 		AliveCheck = true
 	}
