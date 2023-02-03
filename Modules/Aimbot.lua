@@ -10,11 +10,9 @@
 
 local pcall, getgenv, next, setmetatable, Vector2new, CFramenew, Color3fromRGB, mathclamp, mousemoverel = pcall, getgenv, next, setmetatable, Vector2.new, CFrame.new, Color3.fromRGB, math.clamp, mousemoverel or (Input and Input.MouseMove)
 
---// Preventing Multiple Processes
+--// Launching checks
 
-pcall(function()
-	getgenv().AirHub.Aimbot.Functions:Exit()
-end)
+if not getgenv().AirHub or getgenv().AirHub.Aimbot then return end
 
 --// Environment
 
