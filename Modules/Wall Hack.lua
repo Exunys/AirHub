@@ -337,16 +337,14 @@ local Visuals = {
 					end
 					
 
-					--[[
 					if Environment.Settings.TeamCheck then
 						Checks.Team = Player.TeamColor ~= LocalPlayer.TeamColor
 					else
 						Checks.Team = true
 					end
-					]]
 
 					--Checks.Alive = Environment.Settings.AliveCheck and Player.Character:FindFirstChildOfClass("Humanoid").Health > 0 or true
-					Checks.Team = Environment.Settings.TeamCheck and Player.TeamColor ~= LocalPlayer.TeamColor or true
+					--Checks.Team = Environment.Settings.TeamCheck and Player.TeamColor ~= LocalPlayer.TeamColor or true
 
 					PlayerTable.ESP.Visible = Checks.Alive and Checks.Team and true or false
 
