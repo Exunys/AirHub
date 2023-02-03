@@ -146,6 +146,29 @@ local function AssignRigType(Player)
 	end
 end
 
+local function InitChecks(Player)
+	local PlayerTable = GetPlayerTable(Player)
+
+	PlayerTable.Connections.UpdateChecks = RunService.RenderStepped:Connect(function()
+		if Player.Character and Player.Character:FindFirstChildOfClass("Humanoid") then
+			if Environment.Settings.AliveCheck then
+				PlayerTable.Checks.Alive = Player.Character:FindFirstChildOfClass("Humanoid").Health > 0
+			else
+				PlayerTable.Checks.Alive = true
+			end
+
+			if Environment.Settings.TeamCheck then
+				PlayerTable.Checks.Team = Player.TeamColor ~= LocalPlayer.TeamColor
+			else
+				PlayerTable.Checks.Team = true
+			end
+		else
+			PlayerTable.Checks.Alive = false
+			PlayerTable.Checks.Team = false
+		end
+	end)
+end
+
 --// Visuals
 
 local Visuals = {
@@ -324,29 +347,7 @@ local Visuals = {
 				PlayerTable.ESP.Visible = Environment.Visuals.ESPSettings.Enabled
 
 				if OnScreen and Environment.Visuals.ESPSettings.Enabled then
-					local Checks = {}
-
-					--Checks.Alive = Environment.Settings.AliveCheck and Player.Character:FindFirstChildOfClass("Humanoid").Health > 0 or true
-					--Checks.Team = Environment.Settings.TeamCheck and Player.TeamColor ~= LocalPlayer.TeamColor or true
-
-					
-					if Environment.Settings.AliveCheck then
-						Checks.Alive = Player.Character:FindFirstChildOfClass("Humanoid").Health > 0
-					else
-						Checks.Alive = true
-					end
-					
-
-					if Environment.Settings.TeamCheck then
-						Checks.Team = Player.TeamColor ~= LocalPlayer.TeamColor
-					else
-						Checks.Team = true
-					end
-
-					--Checks.Alive = Environment.Settings.AliveCheck and Player.Character:FindFirstChildOfClass("Humanoid").Health > 0 or true
-					--Checks.Team = Environment.Settings.TeamCheck and Player.TeamColor ~= LocalPlayer.TeamColor or true
-
-					PlayerTable.ESP.Visible = Checks.Alive and Checks.Team and true or false
+					PlayerTable.ESP.Visible = PlayerTable.Checks.Alive and PlayerTable.Checks.Team and true or false
 
 					if PlayerTable.ESP.Visible then
 						PlayerTable.ESP.Center = true
@@ -400,12 +401,7 @@ local Visuals = {
 
 				if OnScreen and Environment.Visuals.TracersSettings.Enabled then
 					if Environment.Visuals.TracersSettings.Enabled then
-						local Checks = {}
-
-						Checks.Alive = Environment.Settings.AliveCheck and Player.Character:FindFirstChildOfClass("Humanoid").Health > 0 or true
-						Checks.Team = Environment.Settings.TeamCheck and Player.TeamColor ~= LocalPlayer.TeamColor or true
-
-						PlayerTable.Tracer.Visible = Checks.Alive and Checks.Team and true or false
+						PlayerTable.Tracer.Visible = PlayerTable.Checks.Alive and PlayerTable.Checks.Team and true or false
 
 						if PlayerTable.Tracer.Visible then
 							PlayerTable.Tracer.Thickness = Environment.Visuals.TracersSettings.Thickness
@@ -489,12 +485,7 @@ local Visuals = {
 				Visibility(Environment.Visuals.BoxSettings.Enabled)
 
 				if OnScreen and Environment.Visuals.BoxSettings.Enabled then
-					local Checks = {}
-
-					Checks.Alive = Environment.Settings.AliveCheck and Player.Character:FindFirstChildOfClass("Humanoid").Health > 0 or true
-					Checks.Team = Environment.Settings.TeamCheck and Player.TeamColor ~= LocalPlayer.TeamColor or true
-
-					if Checks.Alive and Checks.Team then
+					if PlayerTable.Checks.Alive and PlayerTable.Checks.Team then
 						Visibility(true)
 					else
 						Visibility2(false)
@@ -559,12 +550,7 @@ local Visuals = {
 
 				if OnScreen and Environment.Visuals.HeadDotSettings.Enabled then
 					if Environment.Visuals.HeadDotSettings.Enabled then
-						local Checks = {}
-
-						Checks.Alive = Environment.Settings.AliveCheck and Player.Character:FindFirstChildOfClass("Humanoid").Health > 0 or true
-						Checks.Team = Environment.Settings.TeamCheck and Player.TeamColor ~= LocalPlayer.TeamColor or true
-
-						PlayerTable.HeadDot.Visible = Checks.Alive and Checks.Team and true or false
+						PlayerTable.HeadDot.Visible = PlayerTable.Checks.Alive and PlayerTable.Checks.Team and true or false
 
 						if PlayerTable.HeadDot.Visible then
 							PlayerTable.HeadDot.Thickness = Environment.Visuals.HeadDotSettings.Thickness
@@ -670,7 +656,7 @@ local Visuals = {
 
 local function Wrap(Player)
 	if not GetPlayerTable(Player) then
-		local Table, Value = nil, {Name = Player.Name, RigType = nil, Connections = {}, ESP = nil, Tracer = nil, HeadDot = nil, Box = {Square = nil, TopLeftLine = nil, TopRightLine = nil, BottomLeftLine = nil, BottomRightLine = nil}, Chams = {}}
+		local Table, Value = nil, {Name = Player.Name, RigType = nil, Checks = {Alive = true, Team = true}, Connections = {}, ESP = nil, Tracer = nil, HeadDot = nil, Box = {Square = nil, TopLeftLine = nil, TopRightLine = nil, BottomLeftLine = nil, BottomRightLine = nil}, Chams = {}}
 
 		for _, v in next, Environment.WrappedPlayers do
 			if v[1] == Player.Name then
@@ -681,6 +667,7 @@ local function Wrap(Player)
 		if not Table then
 			Environment.WrappedPlayers[#Environment.WrappedPlayers + 1] = Value
 			AssignRigType(Player)
+			InitChecks(Player)
 
 			Visuals.AddESP(Player)
 			Visuals.AddTracer(Player)
@@ -768,7 +755,7 @@ function Environment.Functions:Exit()
 	getgenv().AirHub.WallHack.Functions = nil
 	getgenv().AirHub.WallHack = nil
 
-	Load = nil; GetPlayerTable = nil; AssignRigType = nil; Visuals = nil; Wrap = nil; UnWrap = nil
+	Load = nil; GetPlayerTable = nil; AssignRigType = nil; InitChecks = nil; Visuals = nil; Wrap = nil; UnWrap = nil
 end
 
 function Environment.Functions:Restart()
