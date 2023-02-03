@@ -4,6 +4,10 @@
 
 	https://github.com/Exunys
 
+	-- TODO: 
+
+	- Fix TeamCheck for every visual
+
 ]]
 
 --// Cache
@@ -483,8 +487,21 @@ local Visuals = {
 				if OnScreen and Environment.Visuals.BoxSettings.Enabled then
 					local Checks = {}
 
-					Checks.Alive = Environment.Settings.AliveCheck and Player.Character:FindFirstChild("Humanoid").Health > 0 or true
-					Checks.Team = Environment.Settings.TeamCheck and Player.TeamColor ~= LocalPlayer.TeamColor or true
+
+					if Environment.Settings.AliveCheck then
+						Checks.Alive = Player.Character:FindFirstChild("Humanoid").Health > 0
+					else
+						Checks.Alive = true
+					end
+
+					if Environment.Settings.TeamCheck then
+						Checks.Team = Player.TeamColor ~= LocalPlayer.TeamColor
+					else
+						Checks.Team = true
+					end
+
+					--Checks.Alive = Environment.Settings.AliveCheck and Player.Character:FindFirstChild("Humanoid").Health > 0 or true
+					--Checks.Team = Environment.Settings.TeamCheck and Player.TeamColor ~= LocalPlayer.TeamColor or true
 
 					if Checks.Alive and Checks.Team then
 						Visibility(true)
