@@ -6,7 +6,7 @@ This script uses improved versions of Exunys' [Aimbot V2](https://github.com/Exu
 
 The UI Library that this script uses is [Pepsi's UI Library](https://v3rmillion.net/showthread.php?tid=1139856).
 
-Press ***Right Alt*** to open/close the GUI. You can also change this key by pressing on the white cogwheel icon (settings) and navigating to the *Settings* section that is located at the bottom right side of the UI.
+Press ***Right Shift*** to open/close the GUI. You can also change this key by pressing on the white cogwheel icon (settings) and navigating to the *Settings* section that is located at the bottom right side of the UI.
 #
 [1]  ![image](https://user-images.githubusercontent.com/76539058/216461749-8de58ff3-4c6c-4ebf-b91b-0330d5d20782.png) [2]  ![image](https://user-images.githubusercontent.com/76539058/216462036-03bab9fa-6a52-445f-a328-93f17def81e4.png)
 #
