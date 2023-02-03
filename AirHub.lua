@@ -10,13 +10,13 @@
 
 local loadstring, game, getgenv, setclipboard, tablefind, UserInputService = loadstring, game, getgenv, setclipboard, table.find, game:GetService("UserInputService")
 
+--// Loaded check
+
+if getgenv().AirHub then return end
+
 --// Environment
 
 getgenv().AirHub = {}
-
---// Loaded check
-
-if getgenv().AirHub.Aimbot or getgenv().AirHub.WallHack then return end
 
 --// Load Modules
 
@@ -29,16 +29,13 @@ local Library = loadstring(game:GetObjects("rbxassetid://7657867786")[1].Source)
 local Aimbot, WallHack = getgenv().AirHub.Aimbot, getgenv().AirHub.WallHack
 local Parts, Fonts, TracersType = {"Head", "HumanoidRootPart", "Torso", "Left Arm", "Right Arm", "Left Leg", "Right Leg", "LeftHand", "RightHand", "LeftLowerArm", "RightLowerArm", "LeftUpperArm", "RightUpperArm", "LeftFoot", "LeftLowerLeg", "UpperTorso", "LeftUpperLeg", "RightFoot", "RightLowerLeg", "LowerTorso", "RightUpperLeg"}, {"UI", "System", "Plex", "Monospace"}, {"Bottom", "Center", "Mouse"}
 
---// Functions
-
-local function Exit()
-    Aimbot.Functions:Exit()
-    WallHack.Functions:Exit()
-end
-
 --// Frame
 
-Library.UnloadCallback = Exit
+Library.UnloadCallback = function()
+	Aimbot.Functions:Exit()
+	WallHack.Functions:Exit()
+	getgenv().AirHub = nil
+end
 
 local MainFrame = Library:CreateWindow({
 	Name = "AirHub V1.0",
@@ -89,12 +86,12 @@ local ThirdPerson = AimbotTab:CreateSection({
 
 local FOV_Values = AimbotTab:CreateSection({
 	Name = "Field Of View",
-    Side = "Right"
+	Side = "Right"
 })
 
 local FOV_Appearance = AimbotTab:CreateSection({
 	Name = "FOV Circle Appearance",
-    Side = "Right"
+	Side = "Right"
 })
 
 --// Wall Hack Sections
@@ -341,11 +338,11 @@ WallHackChecks:AddToggle({
 
 WallHackChecks:AddToggle({
 	Name = "Team Check",
-	Value = Aimbot.Settings.TeamCheck,
+	Value = WallHack.Settings.TeamCheck,
 	Callback = function(New, Old)
-		Aimbot.Settings.TeamCheck = New
+		WallHack.Settings.TeamCheck = New
 	end
-}).Default = Aimbot.Settings.TeamCheck
+}).Default = WallHack.Settings.TeamCheck
 
 WallHackChecks:AddToggle({
 	Name = "Alive Check",
@@ -739,7 +736,7 @@ FunctionsSection:AddButton({
 	Name = "Reset Settings",
 	Callback = function()
 		Aimbot.Functions:ResetSettings()
-        WallHack.Functions:ResetSettings()
+		WallHack.Functions:ResetSettings()
 		Library.ResetAll()
 	end
 })
@@ -747,9 +744,9 @@ FunctionsSection:AddButton({
 FunctionsSection:AddButton({
 	Name = "Restart",
 	Callback = function()
-       Aimbot.Functions:Restart()
-       WallHack.Functions:Restart()
-    end
+	   Aimbot.Functions:Restart()
+	   WallHack.Functions:Restart()
+	end
 })
 
 FunctionsSection:AddButton({
