@@ -14,11 +14,6 @@ local pcall, getgenv, next, setmetatable, Vector2new, CFramenew, Color3fromRGB, 
 
 if not getgenv().AirHub or getgenv().AirHub.Aimbot then return end
 
---// Environment
-
-getgenv().AirHub.Aimbot = {}
-local Environment = getgenv().AirHub.Aimbot
-
 --// Services
 
 local RunService = game:GetService("RunService")
@@ -32,36 +27,40 @@ local Camera = workspace.CurrentCamera
 
 local RequiredDistance, Typing, Running, Animation, ServiceConnections = 2000, false, false, nil, {}
 
---// Script Settings
+--// Environment
 
-Environment.Settings = {
-	Enabled = false,
-	TeamCheck = false,
-	AliveCheck = true,
-	WallCheck = false, -- Laggy
-	Sensitivity = 0, -- Animation length (in seconds) before fully locking onto target
-	ThirdPerson = false, -- Uses mousemoverel instead of CFrame to support locking in third person (could be choppy)
-	ThirdPersonSensitivity = 3, -- Boundary: 0.1 - 5
-	TriggerKey = "MouseButton2",
-	Toggle = false,
-	LockPart = "Head" -- Body part to lock on
+getgenv().AirHub.Aimbot = {
+	Settings = {
+		Enabled = false,
+		TeamCheck = false,
+		AliveCheck = true,
+		WallCheck = false,
+		Sensitivity = 0, -- Animation length (in seconds) before fully locking onto target
+		ThirdPerson = false, -- Uses mousemoverel instead of CFrame to support locking in third person (could be choppy)
+		ThirdPersonSensitivity = 3,
+		TriggerKey = "MouseButton2",
+		Toggle = false,
+		LockPart = "Head" -- Body part to lock on
+	},
+
+	FOVSettings = {
+		Enabled = true,
+		Visible = true,
+		Amount = 90,
+		Color = Color3fromRGB(255, 255, 255),
+		LockedColor = Color3fromRGB(255, 70, 70),
+		Transparency = 0.5,
+		Sides = 60,
+		Thickness = 1,
+		Filled = false
+	},
+
+	FOVCircle = Drawing.new("Circle")
 }
 
-Environment.FOVSettings = {
-	Enabled = true,
-	Visible = true,
-	Amount = 90,
-	Color = Color3fromRGB(255, 255, 255),
-	LockedColor = Color3fromRGB(255, 70, 70),
-	Transparency = 0.5,
-	Sides = 60,
-	Thickness = 1,
-	Filled = false
-}
+local Environment = getgenv().AirHub.Aimbot
 
-Environment.FOVCircle = Drawing.new("Circle")
-
---// Functions
+--// Core Functions
 
 local function CancelLock()
 	Environment.Locked = nil
@@ -90,22 +89,10 @@ local function GetClosestPlayer()
 				end
 			end
 		end
-	--elseif (UserInputService:GetMouseLocation() - Camera:WorldToViewportPoint(Environment.Locked.Character[Environment.Settings.LockPart].Position)).Magnitude > RequiredDistance then
-	--	CancelLock()
+	elseif (UserInputService:GetMouseLocation() - Camera:WorldToViewportPoint(Environment.Locked.Character[Environment.Settings.LockPart].Position)).Magnitude > RequiredDistance then
+		CancelLock()
 	end
 end
-
---// Typing Check
-
-ServiceConnections.TypingStartedConnection = UserInputService.TextBoxFocused:Connect(function()
-	Typing = true
-end)
-
-ServiceConnections.TypingEndedConnection = UserInputService.TextBoxFocusReleased:Connect(function()
-	Typing = false
-end)
-
---// Main
 
 local function Load()
 	ServiceConnections.RenderSteppedConnection = RunService.RenderStepped:Connect(function()
@@ -194,6 +181,16 @@ local function Load()
 		end
 	end)
 end
+
+--// Typing Check
+
+ServiceConnections.TypingStartedConnection = UserInputService.TextBoxFocused:Connect(function()
+	Typing = true
+end)
+
+ServiceConnections.TypingEndedConnection = UserInputService.TextBoxFocusReleased:Connect(function()
+	Typing = false
+end)
 
 --// Functions
 
