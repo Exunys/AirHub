@@ -29,10 +29,7 @@ local ServiceConnections = {}
 
 --// Environment
 
-getgenv().AirHub.WallHack = {}
-local Environment = getgenv().AirHub.WallHack
-
-Environment = {
+getgenv().AirHub.WallHack = {
 	Settings = {
 		Enabled = false,
 		TeamCheck = false,
@@ -118,6 +115,8 @@ Environment = {
 
 	WrappedPlayers = {}
 }
+
+local Environment = getgenv().AirHub.WallHack
 
 --// Core Functions
 
