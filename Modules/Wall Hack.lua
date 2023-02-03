@@ -9,121 +9,121 @@
 --// Cache
 
 local next, tostring, pcall, getgenv, setmetatable, mathfloor, mathabs, wait = next, tostring, pcall, getgenv, setmetatable, math.floor, math.abs, task.wait
+local WorldToViewportPoint, Vector2new, Vector3new, CFramenew, Drawingnew, Color3fromRGB = nil, Vector2.new, Vector3.new, CFrame.new, Drawing.new, Color3.fromRGB
 
 --// Launching checks
 
 if not getgenv().AirHub or getgenv().AirHub.WallHack then return end
-
---// Environment
-
-getgenv().AirHub.WallHack = {}
-local Environment = getgenv().AirHub.WallHack
 
 --// Services
 
 local RunService = game:GetService("RunService")
 local UserInputService = game:GetService("UserInputService")
 local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
 local Camera = workspace.CurrentCamera
 
 --// Variables
 
-local LocalPlayer, ServiceConnections = Players.LocalPlayer, {}
+local ServiceConnections = {}
 
---// Cache
+--// Environment
 
-local WorldToViewportPoint, Vector2new, Vector3new, CFramenew, Drawingnew, Color3fromRGB = function(...) return Camera.WorldToViewportPoint(Camera, ...) end, Vector2.new, Vector3.new, CFrame.new, Drawing.new, Color3.fromRGB
+getgenv().AirHub.WallHack = {}
+local Environment = getgenv().AirHub.WallHack
 
---// Script Settings
-
-Environment.Settings = {
-	Enabled = false,
-	TeamCheck = false,
-	AliveCheck = true
-}
-
---// Wall Hack
-
-Environment.Visuals = {
-	ESPSettings = {
-		Enabled = true,
-		TextColor = Color3fromRGB(255, 255, 255),
-		TextSize = 14,
-		Outline = true,
-		OutlineColor = Color3fromRGB(0, 0, 0),
-		TextTransparency = 0.7,
-		TextFont = Drawing.Fonts.Monospace, -- UI, System, Plex, Monospace
-		DisplayDistance = true,
-		DisplayHealth = true,
-		DisplayName = true
-	},
-
-	TracersSettings = {
-		Enabled = true,
-		Type = 1, -- 1 - Bottom; 2 - Center; 3 - Mouse
-		Transparency = 0.7,
-		Thickness = 1,
-		Color = Color3fromRGB(255, 255, 255)
-	},
-
-	BoxSettings = {
-		Enabled = true,
-		Type = 1; -- 1 - 3D; 2 - 2D;
-		Color = Color3fromRGB(255, 255, 255),
-		Transparency = 0.7,
-		Thickness = 1,
-		Filled = false, -- For 2D
-		Increase = 1
-	},
-
-	ChamsSettings = {
-		Enabled = false, -- Maintenence... (Broken & laggy)
-		Color = Color3fromRGB(255, 255, 255),
-		Transparency = 0.5,
-		Thickness = 0,
-		Filled = true,
-		EntireBody = false -- Keep false to prevent lag
-	},
-
-	HeadDotSettings = {
-		Enabled = true,
-		Color = Color3fromRGB(255, 255, 255),
-		Transparency = 0.5,
-		Thickness = 1,
-		Filled = true,
-		Sides = 30
-	}
-}
-
-Environment.Crosshair = {
+Environment = {
 	Settings = {
 		Enabled = false,
-		Type = 1, -- 1 - Mouse; 2 - Center
-		Size = 12,
-		Thickness = 1,
-		Color = Color3fromRGB(0, 255, 0),
-		Transparency = 1,
-		GapSize = 5,
-		CenterDot = false,
-		CenterDotColor = Color3fromRGB(0, 255, 0),
-		CenterDotSize = 1,
-		CenterDotTransparency = 1,
-		CenterDotFilled = true,
-		CenterDotThickness = 1
+		TeamCheck = false,
+		AliveCheck = true
 	},
 
-	Parts = {
-		LeftLine = Drawingnew("Line"),
-		RightLine = Drawingnew("Line"),
-		TopLine = Drawingnew("Line"),
-		BottomLine = Drawingnew("Line"),
-		CenterDot = Drawingnew("Circle")
-	}
+	Visuals = {
+		ESPSettings = {
+			Enabled = true,
+			TextColor = Color3fromRGB(255, 255, 255),
+			TextSize = 14,
+			Outline = true,
+			OutlineColor = Color3fromRGB(0, 0, 0),
+			TextTransparency = 0.7,
+			TextFont = Drawing.Fonts.UI, -- UI, System, Plex, Monospace
+			DisplayDistance = true,
+			DisplayHealth = true,
+			DisplayName = true
+		},
+
+		TracersSettings = {
+			Enabled = true,
+			Type = 1, -- 1 - Bottom; 2 - Center; 3 - Mouse
+			Transparency = 0.7,
+			Thickness = 1,
+			Color = Color3fromRGB(255, 255, 255)
+		},
+
+		BoxSettings = {
+			Enabled = true,
+			Type = 1; -- 1 - 3D; 2 - 2D;
+			Color = Color3fromRGB(255, 255, 255),
+			Transparency = 0.7,
+			Thickness = 1,
+			Filled = false, -- For 2D
+			Increase = 1
+		},
+
+		ChamsSettings = {
+			Enabled = false, -- WIP, keep false
+			Color = Color3fromRGB(255, 255, 255),
+			Transparency = 0.5,
+			Thickness = 0,
+			Filled = true,
+			EntireBody = false -- Keep false to prevent lag
+		},
+
+		HeadDotSettings = {
+			Enabled = true,
+			Color = Color3fromRGB(255, 255, 255),
+			Transparency = 0.5,
+			Thickness = 1,
+			Filled = true,
+			Sides = 30
+		}
+	},
+
+	Crosshair = {
+		Settings = {
+			Enabled = false,
+			Type = 1, -- 1 - Mouse; 2 - Center
+			Size = 12,
+			Thickness = 1,
+			Color = Color3fromRGB(0, 255, 0),
+			Transparency = 1,
+			GapSize = 5,
+			CenterDot = false,
+			CenterDotColor = Color3fromRGB(0, 255, 0),
+			CenterDotSize = 1,
+			CenterDotTransparency = 1,
+			CenterDotFilled = true,
+			CenterDotThickness = 1
+		},
+
+		Parts = {
+			LeftLine = Drawingnew("Line"),
+			RightLine = Drawingnew("Line"),
+			TopLine = Drawingnew("Line"),
+			BottomLine = Drawingnew("Line"),
+			CenterDot = Drawingnew("Circle")
+		}
+	},
+
+	WrappedPlayers = {}
 }
 
 --// Core Functions
 
-Environment.WrappedPlayers = {}
+WorldToViewportPoint = function(...)
+	return Camera.WorldToViewportPoint(Camera, ...)
+end
 
 local function GetPlayerTable(Player)
 	for _, v in next, Environment.WrappedPlayers do
@@ -327,8 +327,20 @@ local Visuals = {
 				if OnScreen and Environment.Visuals.ESPSettings.Enabled then
 					local Checks = {}
 
-					Checks.Alive = Environment.Settings.AliveCheck and Player.Character:FindFirstChild("Humanoid").Health > 0 or true
-					Checks.Team = Environment.Settings.TeamCheck and Player.TeamColor ~= LocalPlayer.TeamColor or true
+					--Checks.Alive = Environment.Settings.AliveCheck and Player.Character:FindFirstChild("Humanoid").Health > 0 or true
+					--Checks.Team = Environment.Settings.TeamCheck and Player.TeamColor ~= LocalPlayer.TeamColor or true
+
+					if Environment.Settings.AliveCheck then
+						Checks.Alive = Player.Character:FindFirstChild("Humanoid").Health > 0
+					else
+						Checks.Alive = true
+					end
+
+					if Environment.Settings.TeamCheck then
+						Checks.Team = Player.TeamColor ~= LocalPlayer.TeamColor
+					else
+						Checks.Team = true
+					end
 
 					PlayerTable.ESP.Visible = Checks.Alive and Checks.Team and true or false
 
@@ -343,24 +355,18 @@ local Visuals = {
 
 						PlayerTable.ESP.Position = Vector2new(Vector.X, Vector.Y - 25)
 
-						local Parts = {
+						local Parts, Content = {
 							Health = "("..tostring(Player.Character.Humanoid.Health)..")",
 							Distance = "["..tostring(mathfloor((Player.Character.HumanoidRootPart.Position - (LocalPlayer.Character.HumanoidRootPart.Position or Vector3new(0, 0, 0))).Magnitude)).."]",
 							Name = Player.DisplayName == Player.Name and Player.Name or Player.DisplayName.." {"..Player.Name.."}"
-						}
-
-						local Content = ""
+						}, ""
 
 						if Environment.Visuals.ESPSettings.DisplayName then
 							Content = Parts.Name..Content
 						end
 
 						if Environment.Visuals.ESPSettings.DisplayHealth then
-							if Environment.Visuals.ESPSettings.DisplayName then
-								Content = Parts.Health.." "..Content
-							else
-								Content = Parts.Health..Content
-							end
+							Content = Parts.Health..(Environment.Visuals.ESPSettings.DisplayName and " " or "")..Content
 						end
 
 						if Environment.Visuals.ESPSettings.DisplayDistance then
@@ -785,7 +791,7 @@ function Environment.Functions:ResetSettings()
 			Outline = true,
 			OutlineColor = Color3fromRGB(0, 0, 0),
 			TextTransparency = 0.7,
-			TextFont = Drawing.Fonts.Monospace, -- UI, System, Plex, Monospace
+			TextFont = Drawing.Fonts.UI, -- UI, System, Plex, Monospace
 			DisplayDistance = true,
 			DisplayHealth = true,
 			DisplayName = true
