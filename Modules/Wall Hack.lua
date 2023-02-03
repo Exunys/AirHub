@@ -329,13 +329,13 @@ local Visuals = {
 					--Checks.Alive = Environment.Settings.AliveCheck and Player.Character:FindFirstChildOfClass("Humanoid").Health > 0 or true
 					--Checks.Team = Environment.Settings.TeamCheck and Player.TeamColor ~= LocalPlayer.TeamColor or true
 
-					--[[
+					
 					if Environment.Settings.AliveCheck then
 						Checks.Alive = Player.Character:FindFirstChildOfClass("Humanoid").Health > 0
 					else
 						Checks.Alive = true
 					end
-					]]
+					
 
 					--[[
 					if Environment.Settings.TeamCheck then
@@ -345,10 +345,10 @@ local Visuals = {
 					end
 					]]
 
-					Checks.Alive = Environment.Settings.AliveCheck and Player.Character:FindFirstChildOfClass("Humanoid").Health > 0 or true
+					--Checks.Alive = Environment.Settings.AliveCheck and Player.Character:FindFirstChildOfClass("Humanoid").Health > 0 or true
 					Checks.Team = Environment.Settings.TeamCheck and Player.TeamColor ~= LocalPlayer.TeamColor or true
 
-					PlayerTable.ESP.Visible = (Checks.Alive and Checks.Team) and true or false
+					PlayerTable.ESP.Visible = Checks.Alive and Checks.Team and true or false
 
 					if PlayerTable.ESP.Visible then
 						PlayerTable.ESP.Center = true
