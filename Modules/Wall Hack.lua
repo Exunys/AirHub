@@ -10,11 +10,9 @@
 
 local next, tostring, pcall, getgenv, setmetatable, mathfloor, mathabs, wait = next, tostring, pcall, getgenv, setmetatable, math.floor, math.abs, task.wait
 
---// Preventing Multiple Processes
+--// Launching checks
 
-pcall(function()
-	getgenv().AirHub.WallHack.Functions:Exit()
-end)
+if not getgenv().AirHub or getgenv().AirHub.WallHack then return end
 
 --// Environment
 
@@ -329,7 +327,7 @@ local Visuals = {
 				if OnScreen and Environment.Visuals.ESPSettings.Enabled then
 					local Checks = {}
 
-					Checks.Alive = Environment.Settings.AliveCheck and Player.Character:FindFirstChildOfClass("Humanoid").Health > 0 or true
+					Checks.Alive = Environment.Settings.AliveCheck and Player.Character:FindFirstChild("Humanoid").Health > 0 or true
 					Checks.Team = Environment.Settings.TeamCheck and Player.TeamColor ~= LocalPlayer.TeamColor or true
 
 					PlayerTable.ESP.Visible = Checks.Alive and Checks.Team and true or false
@@ -394,7 +392,7 @@ local Visuals = {
 					if Environment.Visuals.TracersSettings.Enabled then
 						local Checks = {}
 
-						Checks.Alive = Environment.Settings.AliveCheck and Player.Character:FindFirstChildOfClass("Humanoid").Health > 0 or true
+						Checks.Alive = Environment.Settings.AliveCheck and Player.Character:FindFirstChild("Humanoid").Health > 0 or true
 						Checks.Team = Environment.Settings.TeamCheck and Player.TeamColor ~= LocalPlayer.TeamColor or true
 
 						PlayerTable.Tracer.Visible = Checks.Alive and Checks.Team and true or false
@@ -483,24 +481,8 @@ local Visuals = {
 				if OnScreen and Environment.Visuals.BoxSettings.Enabled then
 					local Checks = {}
 
-					if Environment.Settings.AliveCheck then
-						Checks.Alive = Player.Character:FindFirstChildOfClass("Humanoid").Health > 0
-					else
-						Checks.Alive = true
-					end
-
-					if Environment.Settings.TeamCheck then
-						Checks.Team = Player.TeamColor ~= LocalPlayer.TeamColor
-					else
-						Checks.Team = true
-					end
-
-					warn(Environment.Settings.TeamCheck, Player.TeamColor ~= LocalPlayer.TeamColor, Environment.Settings.TeamCheck and Player.TeamColor ~= LocalPlayer.TeamColor, Environment.Settings.TeamCheck and Player.TeamColor ~= LocalPlayer.TeamColor or true)
-					warn(Environment.Settings.AliveCheck, Player.Character:FindFirstChildOfClass("Humanoid").Health > 0, Environment.Settings.AliveCheck and Player.Character:FindFirstChildOfClass("Humanoid").Health > 0, Environment.Settings.AliveCheck and Player.Character:FindFirstChildOfClass("Humanoid").Health > 0 or true)
-					print((Environment.Settings.TeamCheck and Player.TeamColor ~= LocalPlayer.TeamColor or true) and (Environment.Settings.AliveCheck and Player.Character:FindFirstChildOfClass("Humanoid").Health > 0 or true))
-
-					--Checks.Alive = Environment.Settings.AliveCheck and Player.Character:FindFirstChildOfClass("Humanoid").Health > 0 or true
-					--Checks.Team = Environment.Settings.TeamCheck and Player.TeamColor ~= LocalPlayer.TeamColor or true
+					Checks.Alive = Environment.Settings.AliveCheck and Player.Character:FindFirstChild("Humanoid").Health > 0 or true
+					Checks.Team = Environment.Settings.TeamCheck and Player.TeamColor ~= LocalPlayer.TeamColor or true
 
 					if Checks.Alive and Checks.Team then
 						Visibility(true)
@@ -569,7 +551,7 @@ local Visuals = {
 					if Environment.Visuals.HeadDotSettings.Enabled then
 						local Checks = {}
 
-						Checks.Alive = Environment.Settings.AliveCheck and Player.Character:FindFirstChildOfClass("Humanoid").Health > 0 or true
+						Checks.Alive = Environment.Settings.AliveCheck and Player.Character:FindFirstChild("Humanoid").Health > 0 or true
 						Checks.Team = Environment.Settings.TeamCheck and Player.TeamColor ~= LocalPlayer.TeamColor or true
 
 						PlayerTable.HeadDot.Visible = Checks.Alive and Checks.Team and true or false
