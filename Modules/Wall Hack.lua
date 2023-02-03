@@ -496,7 +496,7 @@ local Visuals = {
 					end
 
 					warn(Environment.Settings.TeamCheck, Player.TeamColor ~= LocalPlayer.TeamColor, Environment.Settings.TeamCheck and Player.TeamColor ~= LocalPlayer.TeamColor, Environment.Settings.TeamCheck and Player.TeamColor ~= LocalPlayer.TeamColor or true)
-
+					warn(Environment.Settings.AliveCheck, Player.Character:FindFirstChildOfClass("Humanoid").Health > 0, Environment.Settings.AliveCheck and Player.Character:FindFirstChildOfClass("Humanoid").Health > 0, Environment.Settings.AliveCheck and Player.Character:FindFirstChildOfClass("Humanoid").Health > 0 or true)
 					print((Environment.Settings.TeamCheck and Player.TeamColor ~= LocalPlayer.TeamColor or true) and (Environment.Settings.AliveCheck and Player.Character:FindFirstChildOfClass("Humanoid").Health > 0 or true))
 
 					--Checks.Alive = Environment.Settings.AliveCheck and Player.Character:FindFirstChildOfClass("Humanoid").Health > 0 or true
