@@ -88,7 +88,7 @@ local function GetClosestPlayer()
 				end
 			end
 		end
-	elseif (UserInputService:GetMouseLocation() - Camera:WorldToViewportPoint(Environment.Locked.Character[Environment.Settings.LockPart].Position)).Magnitude > RequiredDistance then
+	elseif (Vector2new(UserInputService:GetMouseLocation().X, UserInputService:GetMouseLocation().Y) - Vector2new(Camera:WorldToViewportPoint(Environment.Locked.Character[Environment.Settings.LockPart].Position).X, Camera:WorldToViewportPoint(Environment.Locked.Character[Environment.Settings.LockPart].Position).Y)).Magnitude > RequiredDistance then
 		CancelLock()
 	end
 end
