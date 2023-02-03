@@ -135,7 +135,7 @@ end
 local function AssignRigType(Player)
 	local PlayerTable = GetPlayerTable(Player)
 
-    repeat wait(0) until Player.Character
+	repeat wait(0) until Player.Character
 
 	if Player.Character:FindFirstChild("Torso") and not Player.Character:FindFirstChild("LowerTorso") then
 		PlayerTable.RigType = "R6"
@@ -741,7 +741,7 @@ local function Load()
 	end)
 end
 
---// Script Functions
+--// Functions
 
 Environment.Functions = {}
 
