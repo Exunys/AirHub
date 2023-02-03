@@ -80,7 +80,7 @@ local function GetClosestPlayer()
 				if Environment.Settings.WallCheck and #(Camera:GetPartsObscuringTarget({v.Character[Environment.Settings.LockPart].Position}, v.Character:GetDescendants())) > 0 then continue end
 
 				local Vector, OnScreen = Camera:WorldToViewportPoint(v.Character[Environment.Settings.LockPart].Position)
-				local Distance = (UserInputService:GetMouseLocation() - Vector).Magnitude
+				local Distance = (Vector2new(UserInputService:GetMouseLocation().X, UserInputService:GetMouseLocation().Y) - Vector2new(Vector.X, Vector.Y)).Magnitude
 
 				if Distance < RequiredDistance and OnScreen then
 					RequiredDistance = Distance
