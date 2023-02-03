@@ -4,10 +4,6 @@
 
 	https://github.com/Exunys
 
-	-- TODO: 
-
-	- Fix TeamCheck for every visual
-
 ]]
 
 --// Cache
@@ -333,7 +329,7 @@ local Visuals = {
 				if OnScreen and Environment.Visuals.ESPSettings.Enabled then
 					local Checks = {}
 
-					Checks.Alive = Environment.Settings.AliveCheck and Player.Character:FindFirstChild("Humanoid").Health > 0 or true
+					Checks.Alive = Environment.Settings.AliveCheck and Player.Character:FindFirstChildOfClass("Humanoid").Health > 0 or true
 					Checks.Team = Environment.Settings.TeamCheck and Player.TeamColor ~= LocalPlayer.TeamColor or true
 
 					PlayerTable.ESP.Visible = Checks.Alive and Checks.Team and true or false
@@ -398,7 +394,7 @@ local Visuals = {
 					if Environment.Visuals.TracersSettings.Enabled then
 						local Checks = {}
 
-						Checks.Alive = Environment.Settings.AliveCheck and Player.Character:FindFirstChild("Humanoid").Health > 0 or true
+						Checks.Alive = Environment.Settings.AliveCheck and Player.Character:FindFirstChildOfClass("Humanoid").Health > 0 or true
 						Checks.Team = Environment.Settings.TeamCheck and Player.TeamColor ~= LocalPlayer.TeamColor or true
 
 						PlayerTable.Tracer.Visible = Checks.Alive and Checks.Team and true or false
@@ -487,9 +483,8 @@ local Visuals = {
 				if OnScreen and Environment.Visuals.BoxSettings.Enabled then
 					local Checks = {}
 
-
 					if Environment.Settings.AliveCheck then
-						Checks.Alive = Player.Character:FindFirstChild("Humanoid").Health > 0
+						Checks.Alive = Player.Character:FindFirstChildOfClass("Humanoid").Health > 0
 					else
 						Checks.Alive = true
 					end
@@ -500,7 +495,9 @@ local Visuals = {
 						Checks.Team = true
 					end
 
-					--Checks.Alive = Environment.Settings.AliveCheck and Player.Character:FindFirstChild("Humanoid").Health > 0 or true
+					print((Environment.Settings.TeamCheck and Player.TeamColor ~= LocalPlayer.TeamColor or true) and (Environment.Settings.AliveCheck and Player.Character:FindFirstChildOfClass("Humanoid").Health > 0 or true))
+
+					--Checks.Alive = Environment.Settings.AliveCheck and Player.Character:FindFirstChildOfClass("Humanoid").Health > 0 or true
 					--Checks.Team = Environment.Settings.TeamCheck and Player.TeamColor ~= LocalPlayer.TeamColor or true
 
 					if Checks.Alive and Checks.Team then
@@ -570,7 +567,7 @@ local Visuals = {
 					if Environment.Visuals.HeadDotSettings.Enabled then
 						local Checks = {}
 
-						Checks.Alive = Environment.Settings.AliveCheck and Player.Character:FindFirstChild("Humanoid").Health > 0 or true
+						Checks.Alive = Environment.Settings.AliveCheck and Player.Character:FindFirstChildOfClass("Humanoid").Health > 0 or true
 						Checks.Team = Environment.Settings.TeamCheck and Player.TeamColor ~= LocalPlayer.TeamColor or true
 
 						PlayerTable.HeadDot.Visible = Checks.Alive and Checks.Team and true or false
