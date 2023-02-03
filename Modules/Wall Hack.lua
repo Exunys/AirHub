@@ -335,11 +335,15 @@ local Visuals = {
 						Checks.Alive = true
 					end
 
+					--[[
 					if Environment.Settings.TeamCheck then
 						Checks.Team = Player.TeamColor ~= LocalPlayer.TeamColor
 					else
 						Checks.Team = true
 					end
+					]]
+
+					Checks.Team = Environment.Settings.TeamCheck and Player.TeamColor ~= LocalPlayer.TeamColor or true
 
 					PlayerTable.ESP.Visible = Checks.Alive and Checks.Team and true or false
 
