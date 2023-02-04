@@ -1,6 +1,6 @@
 --[[
 
-	Aimbot Module [AirHub] by Exunys © CC0 1.0 Universal (2023) - Reverted to commit "e01676a"
+	Aimbot Module [AirHub] by Exunys © CC0 1.0 Universal (2023) - Reverted to commit "6660730ca3850eca96b4388bce3b2b872dd65e77"
 
 	https://github.com/Exunys
 
@@ -76,7 +76,7 @@ local function GetClosestPlayer()
 		for _, v in next, Players:GetPlayers() do
 			if v ~= LocalPlayer then
 				if v.Character and v.Character:FindFirstChild(Environment.Settings.LockPart) and v.Character:FindFirstChildOfClass("Humanoid") then
-					if Environment.Settings.TeamCheck and v.TeamColor == LocalPlayer.TeamColor then continue end
+					if Environment.Settings.TeamCheck and v.Team == LocalPlayer.Team then continue end
 					if Environment.Settings.AliveCheck and v.Character:FindFirstChildOfClass("Humanoid").Health <= 0 then continue end
 					if Environment.Settings.WallCheck and #(Camera:GetPartsObscuringTarget({v.Character[Environment.Settings.LockPart].Position}, v.Character:GetDescendants())) > 0 then continue end
 
@@ -129,6 +129,7 @@ local function Load()
 				if Environment.Settings.ThirdPerson then
 					local Vector = Camera:WorldToViewportPoint(Environment.Locked.Character[Environment.Settings.LockPart].Position)
 
+					Environment.Settings.ThirdPersonSensitivity = mathclamp(Environment.Settings.ThirdPersonSensitivity, 0.1, 5)
 					mousemoverel((Vector.X - UserInputService:GetMouseLocation().X) * Environment.Settings.ThirdPersonSensitivity, (Vector.Y - UserInputService:GetMouseLocation().Y) * Environment.Settings.ThirdPersonSensitivity)
 				else
 					if Environment.Settings.Sensitivity > 0 then
