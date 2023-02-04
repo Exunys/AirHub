@@ -8,17 +8,11 @@
 
 --// Cache
 
-local select, pcall, getgenv, next, setmetatable, Vector2new, CFramenew, Color3fromRGB, mousemoverel = select, 
-pcall, getgenv, next, setmetatable, Vector2.new, CFrame.new, Color3.fromRGB, mousemoverel or (Input and Input.MouseMove)
+local pcall, getgenv, next, setmetatable, Vector2new, CFramenew, Color3fromRGB, mousemoverel = pcall, getgenv, next, setmetatable, Vector2.new, CFrame.new, Color3.fromRGB, mousemoverel or (Input and Input.MouseMove)
 
 --// Launching checks
 
 if not getgenv().AirHub or getgenv().AirHub.Aimbot then return end
-
---// Environment
-
-getgenv().AirHub.Aimbot = {}
-local Environment = getgenv().AirHub.Aimbot
 
 --// Services
 
@@ -33,34 +27,38 @@ local Camera = workspace.CurrentCamera
 
 local RequiredDistance, Typing, Running, Animation, ServiceConnections = 2000, false, false, nil, {}
 
---// Script Settings
+--// Environment
 
-Environment.Settings = {
-	Enabled = false,
-	TeamCheck = false,
-	AliveCheck = true,
-	WallCheck = false,
-	Sensitivity = 0, -- Animation length (in seconds) before fully locking onto target
-	ThirdPerson = false, -- Uses mousemoverel instead of CFrame to support locking in third person (could be choppy)
-	ThirdPersonSensitivity = 3,
-	TriggerKey = "MouseButton2",
-	Toggle = false,
-	LockPart = "Head" -- Body part to lock on
+getgenv().AirHub.Aimbot = {
+	Settings = {
+		Enabled = false,
+		TeamCheck = false,
+		AliveCheck = true,
+		WallCheck = false,
+		Sensitivity = 0, -- Animation length (in seconds) before fully locking onto target
+		ThirdPerson = false, -- Uses mousemoverel instead of CFrame to support locking in third person (could be choppy)
+		ThirdPersonSensitivity = 3,
+		TriggerKey = "MouseButton2",
+		Toggle = false,
+		LockPart = "Head" -- Body part to lock on
+	},
+
+	FOVSettings = {
+		Enabled = true,
+		Visible = true,
+		Amount = 90,
+		Color = Color3fromRGB(255, 255, 255),
+		LockedColor = Color3fromRGB(255, 70, 70),
+		Transparency = 0.5,
+		Sides = 60,
+		Thickness = 1,
+		Filled = false
+	},
+
+	FOVCircle = Drawing.new("Circle")
 }
 
-Environment.FOVSettings = {
-	Enabled = true,
-	Visible = true,
-	Amount = 90,
-	Color = Color3fromRGB(255, 255, 255),
-	LockedColor = Color3fromRGB(255, 70, 70),
-	Transparency = 0.5,
-	Sides = 60,
-	Thickness = 1,
-	Filled = false
-}
-
-Environment.FOVCircle = Drawing.new("Circle")
+local Environment = getgenv().AirHub.Aimbot
 
 --// Core Functions
 
@@ -91,7 +89,7 @@ local function GetClosestPlayer()
 				end
 			end
 		end
-	elseif (UserInputService:GetMouseLocation() - select(1, Camera:WorldToViewportPoint(Environment.Locked.Character[Environment.Settings.LockPart].Position))).Magnitude > RequiredDistance then
+	elseif (UserInputService:GetMouseLocation() - Camera:WorldToViewportPoint(Environment.Locked.Character[Environment.Settings.LockPart].Position)).Magnitude > RequiredDistance then
 		CancelLock()
 	end
 end
@@ -227,7 +225,7 @@ function Environment.Functions:ResetSettings()
 		WallCheck = false,
 		Sensitivity = 0, -- Animation length (in seconds) before fully locking onto target
 		ThirdPerson = false, -- Uses mousemoverel instead of CFrame to support locking in third person (could be choppy)
-		ThirdPersonSensitivity = 3,
+		ThirdPersonSensitivity = 3, -- Boundary: 0.1 - 5
 		TriggerKey = "MouseButton2",
 		Toggle = false,
 		LockPart = "Head" -- Body part to lock on
