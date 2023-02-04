@@ -647,7 +647,7 @@ CrosshairSettings:AddSlider({
 
 CrosshairSettings:AddSlider({
 	Name = "Size",
-	Value = WallHack.Visuals.ESPSettings.Size,
+	Value = WallHack.Crosshair.Settings.Size,
 	Callback = function(New, Old)
 		WallHack.Crosshair.Settings.Size = New
 	end,
@@ -657,7 +657,7 @@ CrosshairSettings:AddSlider({
 
 CrosshairSettings:AddSlider({
 	Name = "Thickness",
-	Value = WallHack.Visuals.ESPSettings.Thickness,
+	Value = WallHack.Crosshair.Settings.Thickness,
 	Callback = function(New, Old)
 		WallHack.Crosshair.Settings.Thickness = New
 	end,
@@ -667,7 +667,7 @@ CrosshairSettings:AddSlider({
 
 CrosshairSettings:AddSlider({
 	Name = "Gap Size",
-	Value = WallHack.Visuals.ESPSettings.GapSize,
+	Value = WallHack.Crosshair.Settings.GapSize,
 	Callback = function(New, Old)
 		WallHack.Crosshair.Settings.GapSize = New
 	end,
@@ -703,7 +703,7 @@ CrosshairSettings_CenterDot:AddColorpicker({
 
 CrosshairSettings_CenterDot:AddSlider({
 	Name = "Center Dot Size",
-	Value = WallHack.Visuals.ESPSettings.CenterDotSize,
+	Value = WallHack.Crosshair.Settings.CenterDotSize,
 	Callback = function(New, Old)
 		WallHack.Crosshair.Settings.CenterDotSize = New
 	end,
