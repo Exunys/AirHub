@@ -129,9 +129,10 @@ local function Load()
 					else
 						Camera.CFrame = CFramenew(Camera.CFrame.Position, Environment.Locked.Character[Environment.Settings.LockPart].Position)
 					end
+
+					UserInputService.MouseDeltaSensitivity = 0
 				end
 
-				UserInputService.MouseDeltaSensitivity = 0
 				Environment.FOVCircle.Color = Environment.FOVSettings.LockedColor
 			end
 		end
