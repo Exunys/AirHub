@@ -75,17 +75,19 @@ local function GetClosestPlayer()
 		RequiredDistance = (Environment.FOVSettings.Enabled and Environment.FOVSettings.Amount or 2000)
 
 		for _, v in next, Players:GetPlayers() do
-			if v ~= LocalPlayer and v.Character and v.Character:FindFirstChild(Environment.Settings.LockPart) then
-				if Environment.Settings.TeamCheck and v.TeamColor == LocalPlayer.TeamColor then continue end
-				if Environment.Settings.AliveCheck and v.Character:FindFirstChildOfClass("Humanoid").Health or 0 <= 0 then continue end
-				if Environment.Settings.WallCheck and #(Camera:GetPartsObscuringTarget({v.Character[Environment.Settings.LockPart].Position}, v.Character:GetDescendants())) > 0 then continue end
+			if v ~= LocalPlayer then
+				if v.Character and v.Character:FindFirstChild(Environment.Settings.LockPart) then
+					if Environment.Settings.TeamCheck and v.TeamColor == LocalPlayer.TeamColor then continue end
+					if Environment.Settings.AliveCheck and v.Character:FindFirstChildOfClass("Humanoid").Health or 0 <= 0 then continue end
+					if Environment.Settings.WallCheck and #(Camera:GetPartsObscuringTarget({v.Character[Environment.Settings.LockPart].Position}, v.Character:GetDescendants())) > 0 then continue end
 
-				local Vector, OnScreen = Camera:WorldToViewportPoint(v.Character[Environment.Settings.LockPart].Position)
-				local Distance = (UserInputService:GetMouseLocation() - Vector).Magnitude
+					local Vector, OnScreen = Camera:WorldToViewportPoint(v.Character[Environment.Settings.LockPart].Position)
+					local Distance = (UserInputService:GetMouseLocation() - Vector).Magnitude
 
-				if Distance < RequiredDistance and OnScreen then
-					RequiredDistance = Distance
-					Environment.Locked = v
+					if Distance < RequiredDistance and OnScreen then
+						RequiredDistance = Distance
+						Environment.Locked = v
+					end
 				end
 			end
 		end
