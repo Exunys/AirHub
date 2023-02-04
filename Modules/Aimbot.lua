@@ -8,11 +8,17 @@
 
 --// Cache
 
-local pcall, getgenv, next, setmetatable, Vector2new, CFramenew, Color3fromRGB, mousemoverel = pcall, getgenv, next, setmetatable, Vector2.new, CFrame.new, Color3.fromRGB, mousemoverel or (Input and Input.MouseMove)
+local select, pcall, getgenv, next, setmetatable, Vector2new, CFramenew, Color3fromRGB, mousemoverel = select, 
+pcall, getgenv, next, setmetatable, Vector2.new, CFrame.new, Color3.fromRGB, mousemoverel or (Input and Input.MouseMove)
 
 --// Launching checks
 
 if not getgenv().AirHub or getgenv().AirHub.Aimbot then return end
+
+--// Environment
+
+getgenv().AirHub.Aimbot = {}
+local Environment = getgenv().AirHub.Aimbot
 
 --// Services
 
@@ -27,38 +33,34 @@ local Camera = workspace.CurrentCamera
 
 local RequiredDistance, Typing, Running, Animation, ServiceConnections = 2000, false, false, nil, {}
 
---// Environment
+--// Script Settings
 
-getgenv().AirHub.Aimbot = {
-	Settings = {
-		Enabled = false,
-		TeamCheck = false,
-		AliveCheck = true,
-		WallCheck = false,
-		Sensitivity = 0, -- Animation length (in seconds) before fully locking onto target
-		ThirdPerson = false, -- Uses mousemoverel instead of CFrame to support locking in third person (could be choppy)
-		ThirdPersonSensitivity = 3,
-		TriggerKey = "MouseButton2",
-		Toggle = false,
-		LockPart = "Head" -- Body part to lock on
-	},
-
-	FOVSettings = {
-		Enabled = true,
-		Visible = true,
-		Amount = 90,
-		Color = Color3fromRGB(255, 255, 255),
-		LockedColor = Color3fromRGB(255, 70, 70),
-		Transparency = 0.5,
-		Sides = 60,
-		Thickness = 1,
-		Filled = false
-	},
-
-	FOVCircle = Drawing.new("Circle")
+Environment.Settings = {
+	Enabled = false,
+	TeamCheck = false,
+	AliveCheck = true,
+	WallCheck = false,
+	Sensitivity = 0, -- Animation length (in seconds) before fully locking onto target
+	ThirdPerson = false, -- Uses mousemoverel instead of CFrame to support locking in third person (could be choppy)
+	ThirdPersonSensitivity = 3,
+	TriggerKey = "MouseButton2",
+	Toggle = false,
+	LockPart = "Head" -- Body part to lock on
 }
 
-local Environment = getgenv().AirHub.Aimbot
+Environment.FOVSettings = {
+	Enabled = true,
+	Visible = true,
+	Amount = 90,
+	Color = Color3fromRGB(255, 255, 255),
+	LockedColor = Color3fromRGB(255, 70, 70),
+	Transparency = 0.5,
+	Sides = 60,
+	Thickness = 1,
+	Filled = false
+}
+
+Environment.FOVCircle = Drawing.new("Circle")
 
 --// Core Functions
 
@@ -73,23 +75,21 @@ local function GetClosestPlayer()
 		RequiredDistance = (Environment.FOVSettings.Enabled and Environment.FOVSettings.Amount or 2000)
 
 		for _, v in next, Players:GetPlayers() do
-			if v ~= LocalPlayer then
-				if v.Character and v.Character:FindFirstChild(Environment.Settings.LockPart) then
-					if Environment.Settings.TeamCheck and v.TeamColor == LocalPlayer.TeamColor then continue end
-					if Environment.Settings.AliveCheck and v.Character:FindFirstChildOfClass("Humanoid").Health or 0 <= 0 then continue end
-					if Environment.Settings.WallCheck and #(Camera:GetPartsObscuringTarget({v.Character[Environment.Settings.LockPart].Position}, v.Character:GetDescendants())) > 0 then continue end
+			if v ~= LocalPlayer and v.Character and v.Character:FindFirstChild(Environment.Settings.LockPart) then
+				if Environment.Settings.TeamCheck and v.TeamColor == LocalPlayer.TeamColor then continue end
+				if Environment.Settings.AliveCheck and v.Character:FindFirstChildOfClass("Humanoid").Health or 0 <= 0 then continue end
+				if Environment.Settings.WallCheck and #(Camera:GetPartsObscuringTarget({v.Character[Environment.Settings.LockPart].Position}, v.Character:GetDescendants())) > 0 then continue end
 
-					local Vector, OnScreen = Camera:WorldToViewportPoint(v.Character[Environment.Settings.LockPart].Position)
-					local Distance = (UserInputService:GetMouseLocation() - Vector).Magnitude
+				local Vector, OnScreen = Camera:WorldToViewportPoint(v.Character[Environment.Settings.LockPart].Position)
+				local Distance = (UserInputService:GetMouseLocation() - Vector).Magnitude
 
-					if Distance < RequiredDistance and OnScreen then
-						RequiredDistance = Distance
-						Environment.Locked = v
-					end
+				if Distance < RequiredDistance and OnScreen then
+					RequiredDistance = Distance
+					Environment.Locked = v
 				end
 			end
 		end
-	elseif (UserInputService:GetMouseLocation() - Camera:WorldToViewportPoint(Environment.Locked.Character[Environment.Settings.LockPart].Position)).Magnitude > RequiredDistance then
+	elseif (UserInputService:GetMouseLocation() - select(1, Camera:WorldToViewportPoint(Environment.Locked.Character[Environment.Settings.LockPart].Position))).Magnitude > RequiredDistance then
 		CancelLock()
 	end
 end
@@ -225,7 +225,7 @@ function Environment.Functions:ResetSettings()
 		WallCheck = false,
 		Sensitivity = 0, -- Animation length (in seconds) before fully locking onto target
 		ThirdPerson = false, -- Uses mousemoverel instead of CFrame to support locking in third person (could be choppy)
-		ThirdPersonSensitivity = 3, -- Boundary: 0.1 - 5
+		ThirdPersonSensitivity = 3,
 		TriggerKey = "MouseButton2",
 		Toggle = false,
 		LockPart = "Head" -- Body part to lock on
