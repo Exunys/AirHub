@@ -361,7 +361,7 @@ local Visuals = {
 						PlayerTable.ESP.Position = Vector2new(Vector.X, Vector.Y - 25)
 
 						local Parts, Content = {
-							Health = "("..tostring(Player.Character.Humanoid.Health)..")",
+							Health = "("..tostring(mathfloor(Player.Character.Humanoid.Health))..")",
 							Distance = "["..tostring(mathfloor((Player.Character.HumanoidRootPart.Position - (LocalPlayer.Character.HumanoidRootPart.Position or Vector3new(0, 0, 0))).Magnitude)).."]",
 							Name = Player.DisplayName == Player.Name and Player.Name or Player.DisplayName.." {"..Player.Name.."}"
 						}, ""
