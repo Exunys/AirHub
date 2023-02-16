@@ -38,7 +38,7 @@ Library.UnloadCallback = function()
 end
 
 local MainFrame = Library:CreateWindow({
-	Name = "AirHub V1.0",
+	Name = "AirHub",
 	Themeable = {
 		Image = "7059346386",
 		Info = "Made by Exunys\nPowered by Pepsi's UI Library",
@@ -52,10 +52,6 @@ local MainFrame = Library:CreateWindow({
 
 local AimbotTab = MainFrame:CreateTab({
 	Name = "Aimbot"
-})
-
-local WallHackTab = MainFrame:CreateTab({
-	Name = "Wall Hack"
 })
 
 local VisualsTab = MainFrame:CreateTab({
@@ -94,29 +90,27 @@ local FOV_Appearance = AimbotTab:CreateSection({
 	Side = "Right"
 })
 
---// Wall Hack Sections
+--// Visuals Sections
 
-local WallHackChecks = WallHackTab:CreateSection({
+local WallHackChecks = VisualsTab:CreateSection({
 	Name = "Checks"
 })
-
---// Visuals Sections
 
 local ESPSettings = VisualsTab:CreateSection({
 	Name = "ESP Settings"
 })
 
+local BoxesSettings = VisualsTab:CreateSection({
+	Name = "Boxes Settings"
+})
+
 local TracersSettings = VisualsTab:CreateSection({
-	Name = "Tracers Settings"
+	Name = "Tracers Settings",
+	Side = "Right"
 })
 
 local HeadDotsSettings = VisualsTab:CreateSection({
 	Name = "Head Dots Settings",
-	Side = "Right"
-})
-
-local BoxesSettings = VisualsTab:CreateSection({
-	Name = "Boxes Settings",
 	Side = "Right"
 })
 
@@ -394,6 +388,16 @@ ESPSettings:AddToggle({
 	end
 }).Default = WallHack.Visuals.ESPSettings.DisplayName
 
+ESPSettings:AddSlider({
+	Name = "Offset",
+	Value = WallHack.Visuals.ESPSettings.Offset,
+	Callback = function(New, Old)
+		WallHack.Visuals.ESPSettings.Offset = New
+	end,
+	Min = 0,
+	Max = 30
+}).Default = WallHack.Visuals.ESPSettings.Offset
+
 ESPSettings:AddColorpicker({
 	Name = "Text Color",
 	Value = WallHack.Visuals.ESPSettings.TextColor,
@@ -441,6 +445,71 @@ ESPSettings:AddDropdown({
 	Nothing = "UI"
 }).Default = Fonts[WallHack.Visuals.ESPSettings.TextFont + 1]
 
+BoxesSettings:AddToggle({
+	Name = "Enabled",
+	Value = WallHack.Visuals.BoxSettings.Enabled,
+	Callback = function(New, Old)
+		WallHack.Visuals.BoxSettings.Enabled = New
+	end
+}).Default = WallHack.Visuals.BoxSettings.Enabled
+
+BoxesSettings:AddSlider({
+	Name = "Transparency",
+	Value = WallHack.Visuals.BoxSettings.Transparency,
+	Callback = function(New, Old)
+		WallHack.Visuals.BoxSettings.Transparency = New
+	end,
+	Min = 0,
+	Max = 1,
+	Decimals = 2
+}).Default = WallHack.Visuals.BoxSettings.Transparency
+
+BoxesSettings:AddSlider({
+	Name = "Thickness",
+	Value = WallHack.Visuals.BoxSettings.Thickness,
+	Callback = function(New, Old)
+		WallHack.Visuals.BoxSettings.Thickness = New
+	end,
+	Min = 1,
+	Max = 5
+}).Default = WallHack.Visuals.BoxSettings.Thickness
+
+BoxesSettings:AddSlider({
+	Name = "Scale Increase (For 3D)",
+	Value = WallHack.Visuals.BoxSettings.Increase,
+	Callback = function(New, Old)
+		WallHack.Visuals.BoxSettings.Increase = New
+	end,
+	Min = 1,
+	Max = 5
+}).Default = WallHack.Visuals.BoxSettings.Increase
+
+BoxesSettings:AddColorpicker({
+	Name = "Color",
+	Value = WallHack.Visuals.BoxSettings.Color,
+	Callback = function(New, Old)
+		WallHack.Visuals.BoxSettings.Color = New
+	end
+}).Default = WallHack.Visuals.BoxSettings.Color
+
+BoxesSettings:AddDropdown({
+	Name = "Type",
+	Value = WallHack.Visuals.BoxSettings.Type == 1 and "3D" or "2D",
+	Callback = function(New, Old)
+		WallHack.Visuals.BoxSettings.Type = New == "3D" and 1 or 2
+	end,
+	List = {"3D", "2D"},
+	Nothing = "3D"
+}).Default = WallHack.Visuals.BoxSettings.Type == 1 and "3D" or "2D"
+
+BoxesSettings:AddToggle({
+	Name = "Filled (2D Square)",
+	Value = WallHack.Visuals.BoxSettings.Filled,
+	Callback = function(New, Old)
+		WallHack.Visuals.BoxSettings.Filled = New
+	end
+}).Default = WallHack.Visuals.BoxSettings.Filled
+
 TracersSettings:AddToggle({
 	Name = "Enabled",
 	Value = WallHack.Visuals.TracersSettings.Enabled,
@@ -487,71 +556,6 @@ TracersSettings:AddDropdown({
 	List = TracersType,
 	Nothing = "Bottom"
 }).Default = Fonts[WallHack.Visuals.TracersSettings.Type + 1]
-
-BoxesSettings:AddToggle({
-	Name = "Enabled",
-	Value = WallHack.Visuals.BoxSettings.Enabled,
-	Callback = function(New, Old)
-		WallHack.Visuals.BoxSettings.Enabled = New
-	end
-}).Default = WallHack.Visuals.BoxSettings.Enabled
-
-BoxesSettings:AddSlider({
-	Name = "Transparency",
-	Value = WallHack.Visuals.BoxSettings.Transparency,
-	Callback = function(New, Old)
-		WallHack.Visuals.BoxSettings.Transparency = New
-	end,
-	Min = 0,
-	Max = 1,
-	Decimals = 2
-}).Default = WallHack.Visuals.BoxSettings.Transparency
-
-BoxesSettings:AddSlider({
-	Name = "Thickness",
-	Value = WallHack.Visuals.BoxSettings.Thickness,
-	Callback = function(New, Old)
-		WallHack.Visuals.BoxSettings.Thickness = New
-	end,
-	Min = 1,
-	Max = 5
-}).Default = WallHack.Visuals.BoxSettings.Thickness
-
-BoxesSettings:AddSlider({
-	Name = "Scale Increase",
-	Value = WallHack.Visuals.BoxSettings.Increase,
-	Callback = function(New, Old)
-		WallHack.Visuals.BoxSettings.Increase = New
-	end,
-	Min = 1,
-	Max = 5
-}).Default = WallHack.Visuals.BoxSettings.Increase
-
-BoxesSettings:AddColorpicker({
-	Name = "Color",
-	Value = WallHack.Visuals.BoxSettings.Color,
-	Callback = function(New, Old)
-		WallHack.Visuals.BoxSettings.Color = New
-	end
-}).Default = WallHack.Visuals.BoxSettings.Color
-
-BoxesSettings:AddDropdown({
-	Name = "Type",
-	Value = WallHack.Visuals.BoxSettings.Type == 1 and "3D" or "2D",
-	Callback = function(New, Old)
-		WallHack.Visuals.BoxSettings.Type = New == "3D" and 1 or 2
-	end,
-	List = {"3D", "2D"},
-	Nothing = "3D"
-}).Default = WallHack.Visuals.BoxSettings.Type == 1 and "3D" or "2D"
-
-BoxesSettings:AddToggle({
-	Name = "Filled (2D Square)",
-	Value = WallHack.Visuals.BoxSettings.Filled,
-	Callback = function(New, Old)
-		WallHack.Visuals.BoxSettings.Filled = New
-	end
-}).Default = WallHack.Visuals.BoxSettings.Filled
 
 HeadDotsSettings:AddToggle({
 	Name = "Enabled",
