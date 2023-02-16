@@ -45,6 +45,7 @@ getgenv().AirHub.WallHack = {
 			OutlineColor = Color3fromRGB(0, 0, 0),
 			TextTransparency = 0.7,
 			TextFont = Drawing.Fonts.UI, -- UI, System, Plex, Monospace
+			Offset = 20,
 			DisplayDistance = true,
 			DisplayHealth = true,
 			DisplayName = true
@@ -65,16 +66,7 @@ getgenv().AirHub.WallHack = {
 			Transparency = 0.7,
 			Thickness = 1,
 			Filled = false, -- For 2D
-			Increase = 1
-		},
-
-		ChamsSettings = {
-			Enabled = false, -- WIP, keep false
-			Color = Color3fromRGB(255, 255, 255),
-			Transparency = 0.5,
-			Thickness = 0,
-			Filled = true,
-			EntireBody = false -- Keep false to prevent lag
+			Increase = 1 -- For 3D
 		},
 
 		HeadDotSettings = {
@@ -172,169 +164,6 @@ end
 --// Visuals
 
 local Visuals = {
-	AddChams = function(Player)
-		local PlayerTable = GetPlayerTable(Player)
-
-		if PlayerTable.RigType == "R15" then
-			if not Environment.Visuals.ChamsSettings.EntireBody then
-				PlayerTable.Chams = {
-					Head = {},
-					UpperTorso = {},
-					LeftLowerArm = {}, LeftUpperArm = {},
-					RightLowerArm = {}, RightUpperArm = {},
-					LeftLowerLeg = {}, LeftUpperLeg = {},
-					RightLowerLeg = {}, RightUpperLeg = {}
-				}
-			else
-				PlayerTable.Chams = {
-					Head = {},
-					UpperTorso = {}, LowerTorso = {},
-					LeftLowerArm = {}, LeftUpperArm = {}, LeftHand = {},
-					RightLowerArm = {}, RightUpperArm = {}, RightHand = {},
-					LeftLowerLeg = {}, LeftUpperLeg = {}, LeftFoot = {},
-					RightLowerLeg = {}, RightUpperLeg = {}, RightFoot = {}
-				}
-			end
-		elseif PlayerTable.RigType == "R6" then
-			PlayerTable.Chams = {
-				Head = {},
-				Torso = {},
-				["Left Arm"] = {},
-				["Right Arm"] = {},
-				["Left Leg"] = {},
-				["Right Leg"] = {}
-			}
-		end
-
-		for _, v in next, PlayerTable.Chams do
-			v["Quad"] = Drawingnew("Quad")
-
-			for i = 2, 6 do
-				v["Quad"..tostring(i)] = Drawingnew("Quad")
-			end
-		end
-
-		local function UpdateCham(Part, Cham)
-			local CorFrame, PartSize = Part.CFrame, Part.Size / 2
-
-			--// Quad 1 - Front
-
-			Cham.Quad.Transparency = Environment.Visuals.ChamsSettings.Transparency
-			Cham.Quad.Color = Environment.Visuals.ChamsSettings.Color
-			Cham.Quad.Thickness = Environment.Visuals.ChamsSettings.Thickness
-			Cham.Quad.Filled = Environment.Visuals.ChamsSettings.Filled
-			Cham.Quad.Visible = Environment.Visuals.ChamsSettings.Enabled
-
-			local PosTopLeft = WorldToViewportPoint(CorFrame * CFramenew(PartSize.X,  PartSize.Y, PartSize.Z).Position)
-			local PosTopRight = WorldToViewportPoint(CorFrame * CFramenew(-PartSize.X,  PartSize.Y, PartSize.Z).Position)
-			local PosBottomLeft = WorldToViewportPoint(CorFrame * CFramenew(PartSize.X, -PartSize.Y, PartSize.Z).Position)
-			local PosBottomRight = WorldToViewportPoint(CorFrame * CFramenew(-PartSize.X, -PartSize.Y, PartSize.Z).Position)
-
-			Cham.Quad.PointA = Vector2new(PosTopLeft.X, PosTopLeft.Y)
-			Cham.Quad.PointB = Vector2new(PosBottomLeft.X, PosBottomLeft.Y)
-			Cham.Quad.PointC = Vector2new(PosBottomRight.X, PosBottomRight.Y)
-			Cham.Quad.PointD = Vector2new(PosTopRight.X, PosTopRight.Y)
-
-			--// Quad 2 - Back
-
-			Cham.Quad2.Transparency = Environment.Visuals.ChamsSettings.Transparency
-			Cham.Quad2.Color = Environment.Visuals.ChamsSettings.Color
-			Cham.Quad2.Thickness = Environment.Visuals.ChamsSettings.Thickness
-			Cham.Quad2.Filled = Environment.Visuals.ChamsSettings.Filled
-			Cham.Quad2.Visible = Environment.Visuals.ChamsSettings.Enabled
-
-			local PosTopLeft2 = WorldToViewportPoint(CorFrame * CFramenew(PartSize.X,  PartSize.Y, -PartSize.Z).Position)
-			local PosTopRight2 = WorldToViewportPoint(CorFrame * CFramenew(-PartSize.X,  PartSize.Y, -PartSize.Z).Position)
-			local PosBottomLeft2 = WorldToViewportPoint(CorFrame * CFramenew(PartSize.X, -PartSize.Y, -PartSize.Z).Position)
-			local PosBottomRight2 = WorldToViewportPoint(CorFrame * CFramenew(-PartSize.X, -PartSize.Y, -PartSize.Z).Position)
-
-			Cham.Quad2.PointA = Vector2new(PosTopLeft2.X, PosTopLeft2.Y)
-			Cham.Quad2.PointB = Vector2new(PosBottomLeft2.X, PosBottomLeft2.Y)
-			Cham.Quad2.PointC = Vector2new(PosBottomRight2.X, PosBottomRight2.Y)
-			Cham.Quad2.PointD = Vector2new(PosTopRight2.X, PosTopRight2.Y)
-
-			--// Quad 3 - Top
-
-			Cham.Quad3.Transparency = Environment.Visuals.ChamsSettings.Transparency
-			Cham.Quad3.Color = Environment.Visuals.ChamsSettings.Color
-			Cham.Quad3.Thickness = Environment.Visuals.ChamsSettings.Thickness
-			Cham.Quad3.Filled = Environment.Visuals.ChamsSettings.Filled
-			Cham.Quad3.Visible = Environment.Visuals.ChamsSettings.Enabled
-
-			local PosTopLeft3 = WorldToViewportPoint(CorFrame * CFramenew(PartSize.X,  PartSize.Y, PartSize.Z).Position)
-			local PosTopRight3 = WorldToViewportPoint(CorFrame * CFramenew(-PartSize.X, PartSize.Y, PartSize.Z).Position)
-			local PosBottomLeft3 = WorldToViewportPoint(CorFrame * CFramenew(PartSize.X, PartSize.Y, -PartSize.Z).Position)
-			local PosBottomRight3 = WorldToViewportPoint(CorFrame * CFramenew(-PartSize.X, PartSize.Y, -PartSize.Z).Position)
-
-			Cham.Quad3.PointA = Vector2new(PosTopLeft3.X, PosTopLeft3.Y)
-			Cham.Quad3.PointB = Vector2new(PosBottomLeft3.X, PosBottomLeft3.Y)
-			Cham.Quad3.PointC = Vector2new(PosBottomRight3.X, PosBottomRight3.Y)
-			Cham.Quad3.PointD = Vector2new(PosTopRight3.X, PosTopRight3.Y)
-
-			--// Quad 4 - Bottom
-
-			Cham.Quad4.Transparency = Environment.Visuals.ChamsSettings.Transparency
-			Cham.Quad4.Color = Environment.Visuals.ChamsSettings.Color
-			Cham.Quad4.Thickness = Environment.Visuals.ChamsSettings.Thickness
-			Cham.Quad4.Filled = Environment.Visuals.ChamsSettings.Filled
-			Cham.Quad4.Visible = Environment.Visuals.ChamsSettings.Enabled
-
-			local PosTopLeft4 = WorldToViewportPoint(CorFrame * CFramenew(PartSize.X,  -PartSize.Y, PartSize.Z).Position)
-			local PosTopRight4 = WorldToViewportPoint(CorFrame * CFramenew(-PartSize.X, -PartSize.Y, PartSize.Z).Position)
-			local PosBottomLeft4 = WorldToViewportPoint(CorFrame * CFramenew(PartSize.X, -PartSize.Y, -PartSize.Z).Position)
-			local PosBottomRight4 = WorldToViewportPoint(CorFrame * CFramenew(-PartSize.X, -PartSize.Y, -PartSize.Z).Position)
-
-			Cham.Quad4.PointA = Vector2new(PosTopLeft4.X, PosTopLeft4.Y)
-			Cham.Quad4.PointB = Vector2new(PosBottomLeft4.X, PosBottomLeft4.Y)
-			Cham.Quad4.PointC = Vector2new(PosBottomRight4.X, PosBottomRight4.Y)
-			Cham.Quad4.PointD = Vector2new(PosTopRight4.X, PosTopRight4.Y)
-
-			--// Quad 5 - Right
-
-			Cham.Quad5.Transparency = Environment.Visuals.ChamsSettings.Transparency
-			Cham.Quad5.Color = Environment.Visuals.ChamsSettings.Color
-			Cham.Quad5.Thickness = Environment.Visuals.ChamsSettings.Thickness
-			Cham.Quad5.Filled = Environment.Visuals.ChamsSettings.Filled
-			Cham.Quad5.Visible = Environment.Visuals.ChamsSettings.Enabled
-
-			local PosTopLeft5 = WorldToViewportPoint(CorFrame * CFramenew(PartSize.X,  PartSize.Y, PartSize.Z).Position)
-			local PosTopRight5 = WorldToViewportPoint(CorFrame * CFramenew(PartSize.X, PartSize.Y, -PartSize.Z).Position)
-			local PosBottomLeft5 = WorldToViewportPoint(CorFrame * CFramenew(PartSize.X, -PartSize.Y, PartSize.Z).Position)
-			local PosBottomRight5 = WorldToViewportPoint(CorFrame * CFramenew(PartSize.X, -PartSize.Y, -PartSize.Z).Position)
-
-			Cham.Quad5.PointA = Vector2new(PosTopLeft5.X, PosTopLeft5.Y)
-			Cham.Quad5.PointB = Vector2new(PosBottomLeft5.X, PosBottomLeft5.Y)
-			Cham.Quad5.PointC = Vector2new(PosBottomRight5.X, PosBottomRight5.Y)
-			Cham.Quad5.PointD = Vector2new(PosTopRight5.X, PosTopRight5.Y)
-
-			--// Quad 6 - Left
-
-			Cham.Quad6.Transparency = Environment.Visuals.ChamsSettings.Transparency
-			Cham.Quad6.Color = Environment.Visuals.ChamsSettings.Color
-			Cham.Quad6.Thickness = Environment.Visuals.ChamsSettings.Thickness
-			Cham.Quad6.Filled = Environment.Visuals.ChamsSettings.Filled
-			Cham.Quad6.Visible = Environment.Visuals.ChamsSettings.Enabled
-
-			local PosTopLeft6 = WorldToViewportPoint(CorFrame * CFramenew(-PartSize.X,  PartSize.Y, PartSize.Z).Position)
-			local PosTopRight6 = WorldToViewportPoint(CorFrame * CFramenew(-PartSize.X, PartSize.Y, -PartSize.Z).Position)
-			local PosBottomLeft6 = WorldToViewportPoint(CorFrame * CFramenew(-PartSize.X, -PartSize.Y, PartSize.Z).Position)
-			local PosBottomRight6 = WorldToViewportPoint(CorFrame * CFramenew(-PartSize.X, -PartSize.Y, -PartSize.Z).Position)
-
-			Cham.Quad6.PointA = Vector2new(PosTopLeft6.X, PosTopLeft6.Y)
-			Cham.Quad6.PointB = Vector2new(PosBottomLeft6.X, PosBottomLeft6.Y)
-			Cham.Quad6.PointC = Vector2new(PosBottomRight6.X, PosBottomRight6.Y)
-			Cham.Quad6.PointD = Vector2new(PosTopRight6.X, PosTopRight6.Y)
-		end
-
-		PlayerTable.Connections.Chams = RunService.RenderStepped:Connect(function()
-			if Environment.Visuals.ChamsSettings.Enabled then
-				for i, v in next, PlayerTable.Chams do
-					UpdateCham(Player.Character:FindFirstChild(i), v)
-				end
-			end
-		end)
-	end,
-
 	AddESP = function(Player)
 		local PlayerTable = GetPlayerTable(Player)
 
@@ -358,11 +187,11 @@ local Visuals = {
 						PlayerTable.ESP.Transparency = Environment.Visuals.ESPSettings.TextTransparency
 						PlayerTable.ESP.Font = Environment.Visuals.ESPSettings.TextFont
 
-						PlayerTable.ESP.Position = Vector2new(Vector.X, Vector.Y - 25)
+						PlayerTable.ESP.Position = Vector2new(Vector.X, Vector.Y - Environment.Visuals.ESPSettings.Offset)
 
 						local Parts, Content = {
 							Health = "("..tostring(mathfloor(Player.Character.Humanoid.Health))..")",
-							Distance = "["..tostring(mathfloor((Player.Character.HumanoidRootPart.Position - (LocalPlayer.Character.HumanoidRootPart.Position or Vector3new(0, 0, 0))).Magnitude)).."]",
+							Distance = "["..tostring(mathfloor((Player.Character.HumanoidRootPart.Position or Vector3zero - (LocalPlayer.Character.HumanoidRootPart.Position or Vector3zero)).Magnitude)).."]",
 							Name = Player.DisplayName == Player.Name and Player.Name or Player.DisplayName.." {"..Player.Name.."}"
 						}, ""
 
@@ -729,7 +558,7 @@ local function Load()
 			end
 		end
 
-		wait(10)
+		wait(60)
 	end)
 end
 
@@ -804,15 +633,6 @@ function Environment.Functions:ResetSettings()
 			Thickness = 1,
 			Filled = false, -- For 2D
 			Increase = 1
-		},
-
-		ChamsSettings = {
-			Enabled = false,
-			Color = Color3fromRGB(255, 255, 255),
-			Transparency = 0.5,
-			Thickness = 0,
-			Filled = true,
-			EntireBody = false -- Keep false to prevent lag
 		},
 
 		HeadDotSettings = {
