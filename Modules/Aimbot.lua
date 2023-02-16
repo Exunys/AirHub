@@ -141,7 +141,7 @@ local function Load()
 	ServiceConnections.InputBeganConnection = UserInputService.InputBegan:Connect(function(Input)
 		if not Typing then
 			pcall(function()
-				if Input.KeyCode == Enum.KeyCode[#Environment.Settings.TriggerKey == 1 and stringupper(Environment.Settings.TriggerKey)] then
+				if Input.KeyCode == Enum.KeyCode[#Environment.Settings.TriggerKey == 1 and stringupper(Environment.Settings.TriggerKey) or Environment.Settings.TriggerKey] then
 					if Environment.Settings.Toggle then
 						Running = not Running
 
@@ -174,7 +174,7 @@ local function Load()
 		if not Typing then
 			if not Environment.Settings.Toggle then
 				pcall(function()
-					if Input.KeyCode == Enum.KeyCode[#Environment.Settings.TriggerKey == 1 and stringupper(Environment.Settings.TriggerKey)] then
+					if Input.KeyCode == Enum.KeyCode[#Environment.Settings.TriggerKey == 1 and stringupper(Environment.Settings.TriggerKey) or Environment.Settings.TriggerKey] then
 						Running = false; CancelLock()
 					end
 				end)
