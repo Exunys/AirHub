@@ -312,13 +312,13 @@ local Visuals = {
 
 					local HRPCFrame, HRPSize = Player.Character.HumanoidRootPart.CFrame, Player.Character.HumanoidRootPart.Size * Environment.Visuals.BoxSettings.Increase
 
-					local TopLeftPosition = WorldToViewportPoint(HRPCFrame * CFramenew(HRPSize.X,  HRPSize.Y + 0.5, 0).Position)
-					local TopRightPosition = WorldToViewportPoint(HRPCFrame * CFramenew(-HRPSize.X,  HRPSize.Y + 0.5, 0).Position)
-					local BottomLeftPosition = WorldToViewportPoint(HRPCFrame * CFramenew(HRPSize.X, -HRPSize.Y, 0).Position)
-					local BottomRightPosition = WorldToViewportPoint(HRPCFrame * CFramenew(-HRPSize.X, -HRPSize.Y, 0).Position)
-
 					local HeadOffset = WorldToViewportPoint(Player.Character.Head.Position + Vector3new(0, 0.5, 0))
 					local LegsOffset = WorldToViewportPoint(Player.Character.HumanoidRootPart.Position - Vector3new(0, 3, 0))
+
+					local TopLeftPosition = WorldToViewportPoint(HRPCFrame * CFramenew(HRPSize.X, HeadOffset, 0).Position)
+					local TopRightPosition = WorldToViewportPoint(HRPCFrame * CFramenew(-HRPSize.X, HeadOffset, 0).Position)
+					local BottomLeftPosition = WorldToViewportPoint(HRPCFrame * CFramenew(HRPSize.X, LegsOffset, 0).Position)
+					local BottomRightPosition = WorldToViewportPoint(HRPCFrame * CFramenew(-HRPSize.X, LegsOffset, 0).Position)
 						
 					if PlayerTable.Box.Square.Visible and not PlayerTable.Box.TopLeftLine.Visible and not PlayerTable.Box.TopRightLine.Visible and not PlayerTable.Box.BottomLeftLine.Visible and not PlayerTable.Box.BottomRightLine.Visible then
 						PlayerTable.Box.Square.Thickness = Environment.Visuals.BoxSettings.Thickness
