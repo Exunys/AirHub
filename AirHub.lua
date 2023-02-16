@@ -625,6 +625,16 @@ HealthBarSettings:AddToggle({
 	end
 }).Default = WallHack.Visuals.HealthBarSettings.Enabled
 
+HealthBarSettings:AddDropdown({
+	Name = "Position",
+	Value = WallHack.Visuals.HealthBarSettings.Type == 1 and "Top" or WallHack.Visuals.HealthBarSettings.Type == 2 and "Bottom" or WallHack.Visuals.HealthBarSettings.Type == 3 and "Left" or "Right",
+	Callback = function(New, Old)
+		WallHack.Visuals.HealthBarSettings.Type = New == "Top" and 1 or New == "Bottom" and 2 or New == "Left" and 3 or 4
+	end,
+	List = {"Top", "Bottom", "Left", "Right"},
+	Nothing = "Left"
+}).Default = WallHack.Visuals.HealthBarSettings.Type == 1 and "Top" or WallHack.Visuals.HealthBarSettings.Type == 2 and "Bottom" or WallHack.Visuals.HealthBarSettings.Type == 3 and "Left" or "Right"
+
 HealthBarSettings:AddSlider({
 	Name = "Transparency",
 	Value = WallHack.Visuals.HealthBarSettings.Transparency,
@@ -673,16 +683,6 @@ HealthBarSettings:AddColorpicker({
 		WallHack.Visuals.HealthBarSettings.OutlineColor = New
 	end
 }).Default = WallHack.Visuals.HealthBarSettings.OutlineColor
-
-HealthBarSettings:AddDropdown({
-	Name = "Position",
-	Value = WallHack.Visuals.HealthBarSettings.Type == 1 and "Top" or WallHack.Visuals.HealthBarSettings.Type == 2 and "Bottom" or WallHack.Visuals.HealthBarSettings.Type == 3 and "Left" or "Right",
-	Callback = function(New, Old)
-		WallHack.Visuals.HealthBarSettings.Type = New == "Top" and 1 or New == "Bottom" and 2 or New == "Left" and 3 or 4
-	end,
-	List = {"Top", "Bottom", "Left", "Right"},
-	Nothing = "Left"
-}).Default = WallHack.Visuals.HealthBarSettings.Type == 1 and "Top" or WallHack.Visuals.HealthBarSettings.Type == 2 and "Bottom" or WallHack.Visuals.HealthBarSettings.Type == 3 and "Left" or "Right"
 
 --// Crosshair Settings
 
