@@ -8,7 +8,7 @@
 
 --// Cache
 
-local loadstring, game, getgenv, setclipboard, tablefind, UserInputService = loadstring, game, getgenv, setclipboard, table.find, game:GetService("UserInputService")
+local loadstring, getgenv, setclipboard, tablefind, UserInputService = loadstring, getgenv, setclipboard, table.find, game:GetService("UserInputService")
 
 --// Loaded check
 
