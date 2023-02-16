@@ -394,7 +394,7 @@ ESPSettings:AddSlider({
 	Callback = function(New, Old)
 		WallHack.Visuals.ESPSettings.Offset = New
 	end,
-	Min = 0,
+	Min = -30,
 	Max = 30
 }).Default = WallHack.Visuals.ESPSettings.Offset
 
