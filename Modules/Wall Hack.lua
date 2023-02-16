@@ -9,7 +9,7 @@
 --// Cache
 
 local next, tostring, pcall, getgenv, setmetatable, mathfloor, mathabs, wait = next, tostring, pcall, getgenv, setmetatable, math.floor, math.abs, task.wait
-local WorldToViewportPoint, Vector2new, Vector3new, CFramenew, Drawingnew, Color3fromRGB = nil, Vector2.new, Vector3.new, CFrame.new, Drawing.new, Color3.fromRGB
+local WorldToViewportPoint, Vector2new, Vector3new, Vector3zero, CFramenew, Drawingnew, Color3fromRGB = nil, Vector2.new, Vector3.new, Vector3.zero, CFrame.new, Drawing.new, Color3.fromRGB
 
 --// Launching checks
 
@@ -31,7 +31,7 @@ local ServiceConnections = {}
 
 getgenv().AirHub.WallHack = {
 	Settings = {
-		Enabled = false,
+		Enabled = true,
 		TeamCheck = false,
 		AliveCheck = true
 	},
@@ -76,6 +76,16 @@ getgenv().AirHub.WallHack = {
 			Thickness = 1,
 			Filled = false,
 			Sides = 30
+		},
+
+		HealthBarSettings = {
+			Enabled = false,
+			Transparency = 0.8,
+			Size = 2,
+			Offset = 10,
+			OutlineColor = Color3fromRGB(0, 0, 0),
+			Blue = 50,
+			Type = 3 -- 1 - Top; 2 - Bottom; 3 - Left; 4 - Right
 		}
 	},
 
@@ -189,11 +199,11 @@ local Visuals = {
 
 						PlayerTable.ESP.Position = Vector2new(Vector.X, Vector.Y - Environment.Visuals.ESPSettings.Offset)
 
-						local Parts, Content = {
+						local Parts, Content, Tool = {
 							Health = "("..tostring(mathfloor(Player.Character.Humanoid.Health))..")",
 							Distance = "["..tostring(mathfloor((Player.Character.HumanoidRootPart.Position or Vector3zero - (LocalPlayer.Character.HumanoidRootPart.Position or Vector3zero)).Magnitude)).."]",
 							Name = Player.DisplayName == Player.Name and Player.Name or Player.DisplayName.." {"..Player.Name.."}"
-						}, ""
+						}, "", Player.Character:FindFirstChildOfClass("Tool")
 
 						if Environment.Visuals.ESPSettings.DisplayName then
 							Content = Parts.Name..Content
@@ -207,7 +217,7 @@ local Visuals = {
 							Content = Content.." "..Parts.Distance
 						end
 
-						PlayerTable.ESP.Text = Content
+						PlayerTable.ESP.Text = (Tool and "["..Tool.Name.."]\n" or "")..Content
 					end
 				else
 					PlayerTable.ESP.Visible = false
@@ -226,7 +236,7 @@ local Visuals = {
 		PlayerTable.Connections.Tracer = RunService.RenderStepped:Connect(function()
 			if Player.Character and Player.Character:FindFirstChildOfClass("Humanoid") and Player.Character:FindFirstChild("HumanoidRootPart") and Environment.Settings.Enabled then
 				local HRPCFrame, HRPSize = Player.Character.HumanoidRootPart.CFrame, Player.Character.HumanoidRootPart.Size
-				local Vector, OnScreen = WorldToViewportPoint(HRPCFrame * CFramenew(0, -HRPSize.Y, 0).Position)
+				local Vector, OnScreen = WorldToViewportPoint(HRPCFrame * CFramenew(0, -HRPSize.Y - 0.5, 0).Position)
 
 				if OnScreen and Environment.Visuals.TracersSettings.Enabled then
 					if Environment.Visuals.TracersSettings.Enabled then
@@ -317,9 +327,9 @@ local Visuals = {
 
 					local TopLeftPosition = WorldToViewportPoint(HRPCFrame * CFramenew(HRPSize.X, HRPSize.Y, 0).Position)
 					local TopRightPosition = WorldToViewportPoint(HRPCFrame * CFramenew(-HRPSize.X, HRPSize.Y, 0).Position)
-					local BottomLeftPosition = WorldToViewportPoint(HRPCFrame * CFramenew(HRPSize.X, -HRPSize.Y, 0).Position)
-					local BottomRightPosition = WorldToViewportPoint(HRPCFrame * CFramenew(-HRPSize.X, -HRPSize.Y, 0).Position)
-						
+					local BottomLeftPosition = WorldToViewportPoint(HRPCFrame * CFramenew(HRPSize.X, -HRPSize.Y - 0.5, 0).Position)
+					local BottomRightPosition = WorldToViewportPoint(HRPCFrame * CFramenew(-HRPSize.X, -HRPSize.Y - 0.5, 0).Position)
+
 					if PlayerTable.Box.Square.Visible and not PlayerTable.Box.TopLeftLine.Visible and not PlayerTable.Box.TopRightLine.Visible and not PlayerTable.Box.BottomLeftLine.Visible and not PlayerTable.Box.BottomRightLine.Visible then
 						PlayerTable.Box.Square.Thickness = Environment.Visuals.BoxSettings.Thickness
 						PlayerTable.Box.Square.Color = Environment.Visuals.BoxSettings.Color
@@ -398,6 +408,74 @@ local Visuals = {
 				end
 			else
 				PlayerTable.HeadDot.Visible = false
+			end
+		end)
+	end,
+
+	AddHealthBar = function(Player)
+		local PlayerTable = GetPlayerTable(Player)
+
+		PlayerTable.HealthBar.Main = Drawingnew("Square")
+		PlayerTable.HealthBar.Outline = Drawingnew("Square")
+
+		PlayerTable.Connections.HealthBar = RunService.RenderStepped:Connect(function()
+			if Player.Character and Player.Character:FindFirstChildOfClass("Humanoid") and Player.Character:FindFirstChild("HumanoidRootPart") and Environment.Settings.Enabled then
+				local Vector, OnScreen = WorldToViewportPoint(Player.Character.HumanoidRootPart.Position)
+
+				local LeftPosition = WorldToViewportPoint(Player.Character.HumanoidRootPart.CFrame * CFramenew(Player.Character.HumanoidRootPart.Size.X, Player.Character.HumanoidRootPart.Size.Y / 2, 0).Position)
+				local RightPosition = WorldToViewportPoint(Player.Character.HumanoidRootPart.CFrame * CFramenew(-Player.Character.HumanoidRootPart.Size.X, Player.Character.HumanoidRootPart.Size.Y / 2, 0).Position)
+
+				PlayerTable.HealthBar.Main.Visible = Environment.Visuals.HealthBarSettings.Enabled
+				PlayerTable.HealthBar.Outline.Visible = Environment.Visuals.HealthBarSettings.Enabled
+
+				if OnScreen and Environment.Visuals.HealthBarSettings.Enabled then
+					if Environment.Visuals.HealthBarSettings.Enabled then
+						local Humanoid = Player.Character:FindFirstChildOfClass("Humanoid")
+
+						PlayerTable.HealthBar.Main.Visible = PlayerTable.Checks.Alive and PlayerTable.Checks.Team and true or false
+						PlayerTable.HealthBar.Outline.Visible = PlayerTable.HealthBar.Main.Visible
+
+						if PlayerTable.HealthBar.Main.Visible then
+							PlayerTable.HealthBar.Main.Thickness = 1
+							PlayerTable.HealthBar.Main.Color = Color3fromRGB(255 - mathfloor(Humanoid.Health / 100 * 255), mathfloor(Humanoid.Health / 100 * 255), Environment.Visuals.HealthBarSettings.Blue)
+							PlayerTable.HealthBar.Main.Transparency = Environment.Visuals.HealthBarSettings.Transparency
+							PlayerTable.HealthBar.Main.Filled = true
+							PlayerTable.HealthBar.Main.ZIndex = 2
+
+							PlayerTable.HealthBar.Outline.Thickness = 3
+							PlayerTable.HealthBar.Outline.Color = Environment.Visuals.HealthBarSettings.OutlineColor
+							PlayerTable.HealthBar.Outline.Transparency = Environment.Visuals.HealthBarSettings.Transparency
+							PlayerTable.HealthBar.Outline.Filled = false
+							PlayerTable.HealthBar.Main.ZIndex = 1
+
+							if Environment.Visuals.HealthBarSettings.Type == 1 then
+								PlayerTable.HealthBar.Outline.Size = Vector2new(2000 / Vector.Z, Environment.Visuals.HealthBarSettings.Size)
+								PlayerTable.HealthBar.Main.Size = Vector2new(PlayerTable.HealthBar.Outline.Size.X * (Humanoid.Health / 100), PlayerTable.HealthBar.Outline.Size.Y)
+								PlayerTable.HealthBar.Main.Position = Vector2new(Vector.X - PlayerTable.HealthBar.Outline.Size.X / 2, Vector.Y - PlayerTable.HealthBar.Outline.Size.X / 2 - Environment.Visuals.HealthBarSettings.Offset)
+							elseif Environment.Visuals.HealthBarSettings.Type == 2 then
+								PlayerTable.HealthBar.Outline.Size = Vector2new(2000 / Vector.Z, Environment.Visuals.HealthBarSettings.Size)
+								PlayerTable.HealthBar.Main.Size = Vector2new(PlayerTable.HealthBar.Outline.Size.X * (Humanoid.Health / 100), PlayerTable.HealthBar.Outline.Size.Y)
+								PlayerTable.HealthBar.Main.Position = Vector2new(Vector.X - PlayerTable.HealthBar.Outline.Size.X / 2, Vector.Y + PlayerTable.HealthBar.Outline.Size.X / 2 + Environment.Visuals.HealthBarSettings.Offset)
+							elseif Environment.Visuals.HealthBarSettings.Type == 3 then
+								PlayerTable.HealthBar.Outline.Size = Vector2new(Environment.Visuals.HealthBarSettings.Size, 2500 / Vector.Z)
+								PlayerTable.HealthBar.Main.Size = Vector2new(PlayerTable.HealthBar.Outline.Size.X, PlayerTable.HealthBar.Outline.Size.Y * (Humanoid.Health / 100))
+								PlayerTable.HealthBar.Main.Position = Vector2new(LeftPosition.X - Environment.Visuals.HealthBarSettings.Offset, Vector.Y - PlayerTable.HealthBar.Outline.Size.Y / 2)
+							elseif Environment.Visuals.HealthBarSettings.Type == 4 then
+								PlayerTable.HealthBar.Outline.Size = Vector2new(Environment.Visuals.HealthBarSettings.Size, 2500 / Vector.Z)
+								PlayerTable.HealthBar.Main.Size = Vector2new(PlayerTable.HealthBar.Outline.Size.X, PlayerTable.HealthBar.Outline.Size.Y * (Humanoid.Health / 100))
+								PlayerTable.HealthBar.Main.Position = Vector2new(RightPosition.X + Environment.Visuals.HealthBarSettings.Offset, Vector.Y - PlayerTable.HealthBar.Outline.Size.Y / 2)
+							end
+
+							PlayerTable.HealthBar.Outline.Position = PlayerTable.HealthBar.Main.Position
+						end
+					end
+				else
+					PlayerTable.HealthBar.Main.Visible = false
+					PlayerTable.HealthBar.Outline.Visible = false
+				end
+			else
+				PlayerTable.HealthBar.Main.Visible = false
+				PlayerTable.HealthBar.Outline.Visible = false
 			end
 		end)
 	end,
@@ -485,7 +563,7 @@ local Visuals = {
 
 local function Wrap(Player)
 	if not GetPlayerTable(Player) then
-		local Table, Value = nil, {Name = Player.Name, RigType = nil, Checks = {Alive = true, Team = true}, Connections = {}, ESP = nil, Tracer = nil, HeadDot = nil, Box = {Square = nil, TopLeftLine = nil, TopRightLine = nil, BottomLeftLine = nil, BottomRightLine = nil}, Chams = {}}
+		local Table, Value = nil, {Name = Player.Name, RigType = nil, Checks = {Alive = true, Team = true}, Connections = {}, ESP = nil, Tracer = nil, HeadDot = nil, HealthBar = {Main = nil, Outline = nil}, Box = {Square = nil, TopLeftLine = nil, TopRightLine = nil, BottomLeftLine = nil, BottomRightLine = nil}, Chams = {}}
 
 		for _, v in next, Environment.WrappedPlayers do
 			if v[1] == Player.Name then
@@ -502,6 +580,7 @@ local function Wrap(Player)
 			Visuals.AddTracer(Player)
 			Visuals.AddBox(Player)
 			Visuals.AddHeadDot(Player)
+			Visuals.AddHealthBar(Player)
 		end
 	end
 end
@@ -524,6 +603,8 @@ local function UnWrap(Player)
 			Table.ESP:Remove()
 			Table.Tracer:Remove()
 			Table.HeadDot:Remove()
+			Table.HealthBar.Main:Remove()
+			Table.HealthBar.Outline:Remove()
 		end)
 
 		for _, v in next, Table.Box do
@@ -641,6 +722,16 @@ function Environment.Functions:ResetSettings()
 			Thickness = 1,
 			Filled = true,
 			Sides = 30
+		},
+
+		HealthBarSettings = {
+			Enabled = false,
+			Transparency = 0.8,
+			Size = 2,
+			Offset = 10,
+			OutlineColor = Color3fromRGB(0, 0, 0),
+			Blue = 50,
+			Type = 3 -- 1 - Top; 2 - Bottom; 3 - Left; 4 - Right
 		}
 	}
 
