@@ -134,20 +134,6 @@ local function GetPlayerTable(Player)
 	end
 end
 
-local function AssignRigType(Player)
-	local PlayerTable = GetPlayerTable(Player)
-
-	repeat wait(0) until Player.Character
-
-	if Player.Character:FindFirstChild("Torso") and not Player.Character:FindFirstChild("LowerTorso") then
-		PlayerTable.RigType = "R6"
-	elseif Player.Character:FindFirstChild("LowerTorso") and not Player.Character:FindFirstChild("Torso") then
-		PlayerTable.RigType = "R15"
-	else
-		repeat AssignRigType(Player) until PlayerTable.RigType
-	end
-end
-
 local function InitChecks(Player)
 	local PlayerTable = GetPlayerTable(Player)
 
@@ -563,7 +549,7 @@ local Visuals = {
 
 local function Wrap(Player)
 	if not GetPlayerTable(Player) then
-		local Table, Value = nil, {Name = Player.Name, RigType = nil, Checks = {Alive = true, Team = true}, Connections = {}, ESP = nil, Tracer = nil, HeadDot = nil, HealthBar = {Main = nil, Outline = nil}, Box = {Square = nil, TopLeftLine = nil, TopRightLine = nil, BottomLeftLine = nil, BottomRightLine = nil}, Chams = {}}
+		local Table, Value = nil, {Name = Player.Name, Checks = {Alive = true, Team = true}, Connections = {}, ESP = nil, Tracer = nil, HeadDot = nil, HealthBar = {Main = nil, Outline = nil}, Box = {Square = nil, TopLeftLine = nil, TopRightLine = nil, BottomLeftLine = nil, BottomRightLine = nil}, Chams = {}}
 
 		for _, v in next, Environment.WrappedPlayers do
 			if v[1] == Player.Name then
@@ -573,7 +559,6 @@ local function Wrap(Player)
 
 		if not Table then
 			Environment.WrappedPlayers[#Environment.WrappedPlayers + 1] = Value
-			AssignRigType(Player)
 			InitChecks(Player)
 
 			Visuals.AddESP(Player)
@@ -664,7 +649,7 @@ function Environment.Functions:Exit()
 	getgenv().AirHub.WallHack.Functions = nil
 	getgenv().AirHub.WallHack = nil
 
-	Load = nil; GetPlayerTable = nil; AssignRigType = nil; InitChecks = nil; Visuals = nil; Wrap = nil; UnWrap = nil
+	Load = nil; GetPlayerTable = nil; InitChecks = nil; Visuals = nil; Wrap = nil; UnWrap = nil
 end
 
 function Environment.Functions:Restart()
