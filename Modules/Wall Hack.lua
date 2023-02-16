@@ -31,7 +31,7 @@ local ServiceConnections = {}
 
 getgenv().AirHub.WallHack = {
 	Settings = {
-		Enabled = true,
+		Enabled = false,
 		TeamCheck = false,
 		AliveCheck = true
 	},
