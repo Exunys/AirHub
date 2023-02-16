@@ -114,6 +114,11 @@ local HeadDotsSettings = VisualsTab:CreateSection({
 	Side = "Right"
 })
 
+local HealthBarSettings = VisualsTab:CreateSection({
+	Name = "Health Bar Settings",
+	Side = "Right"
+})
+
 --// Crosshair Sections
 
 local CrosshairSettings = CrosshairTab:CreateSection({
@@ -611,6 +616,73 @@ HeadDotsSettings:AddColorpicker({
 		WallHack.Visuals.HeadDotSettings.Color = New
 	end
 }).Default = WallHack.Visuals.HeadDotSettings.Color
+
+HealthBarSettings:AddToggle({
+	Name = "Enabled",
+	Value = WallHack.Visuals.HealthBarSettings.Enabled,
+	Callback = function(New, Old)
+		WallHack.Visuals.HealthBarSettings.Enabled = New
+	end
+}).Default = WallHack.Visuals.HealthBarSettings.Enabled
+
+HealthBarSettings:AddSlider({
+	Name = "Transparency",
+	Value = WallHack.Visuals.HealthBarSettings.Transparency,
+	Callback = function(New, Old)
+		WallHack.Visuals.HealthBarSettings.Transparency = New
+	end,
+	Min = 0,
+	Max = 1,
+	Decimals = 2
+}).Default = WallHack.Visuals.HealthBarSettings.Transparency
+
+HealthBarSettings:AddSlider({
+	Name = "Size",
+	Value = WallHack.Visuals.HealthBarSettings.Size,
+	Callback = function(New, Old)
+		WallHack.Visuals.HealthBarSettings.Size = New
+	end,
+	Min = 2,
+	Max = 10
+}).Default = WallHack.Visuals.HealthBarSettings.Size
+
+HealthBarSettings:AddSlider({
+	Name = "Blue",
+	Value = WallHack.Visuals.HealthBarSettings.Blue,
+	Callback = function(New, Old)
+		WallHack.Visuals.HealthBarSettings.Blue = New
+	end,
+	Min = 0,
+	Max = 255
+}).Default = WallHack.Visuals.HealthBarSettings.Blue
+
+HealthBarSettings:AddSlider({
+	Name = "Offset",
+	Value = WallHack.Visuals.HealthBarSettings.Offset,
+	Callback = function(New, Old)
+		WallHack.Visuals.HealthBarSettings.Offset = New
+	end,
+	Min = -30,
+	Max = 30
+}).Default = WallHack.Visuals.HealthBarSettings.Offset
+
+HealthBarSettings:AddColorpicker({
+	Name = "Outline Color",
+	Value = WallHack.Visuals.HealthBarSettings.OutlineColor,
+	Callback = function(New, Old)
+		WallHack.Visuals.HealthBarSettings.OutlineColor = New
+	end
+}).Default = WallHack.Visuals.HealthBarSettings.OutlineColor
+
+HealthBarSettings:AddDropdown({
+	Name = "Position",
+	Value = WallHack.Visuals.HealthBarSettings.Type == 1 and "Top" or WallHack.Visuals.HealthBarSettings.Type == 2 and "Bottom" or WallHack.Visuals.HealthBarSettings.Type == 3 and "Left" or "Right",
+	Callback = function(New, Old)
+		WallHack.Visuals.HealthBarSettings.Type = New == "Top" and 1 or New == "Bottom" and 2 or New == "Left" and 3 or 4
+	end,
+	List = {"Top", "Bottom", "Left", "Right"},
+	Nothing = "Left"
+}).Default = WallHack.Visuals.HealthBarSettings.Type == 1 and "Top" or WallHack.Visuals.HealthBarSettings.Type == 2 and "Bottom" or WallHack.Visuals.HealthBarSettings.Type == 3 and "Left" or "Right"
 
 --// Crosshair Settings
 
