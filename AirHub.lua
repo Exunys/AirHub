@@ -104,6 +104,10 @@ local BoxesSettings = VisualsTab:CreateSection({
 	Name = "Boxes Settings"
 })
 
+local ChamsSettings = VisualsTab:CreateSection({
+	Name = "Chams Settings"
+})
+
 local TracersSettings = VisualsTab:CreateSection({
 	Name = "Tracers Settings",
 	Side = "Right"
@@ -515,6 +519,59 @@ BoxesSettings:AddToggle({
 	end
 }).Default = WallHack.Visuals.BoxSettings.Filled
 
+ChamsSettings:AddToggle({
+	Name = "Enabled",
+	Value = WallHack.Visuals.ChamsSettings.Enabled,
+	Callback = function(New, Old)
+		WallHack.Visuals.ChamsSettings.Enabled = New
+	end
+}).Default = WallHack.Visuals.ChamsSettings.Enabled
+
+ChamsSettings:AddToggle({
+	Name = "Filled",
+	Value = WallHack.Visuals.ChamsSettings.Filled,
+	Callback = function(New, Old)
+		WallHack.Visuals.ChamsSettings.Filled = New
+	end
+}).Default = WallHack.Visuals.ChamsSettings.Filled
+
+ChamsSettings:AddToggle({
+	Name = "Entire Body (For R15 Rigs)",
+	Value = WallHack.Visuals.ChamsSettings.EntireBody,
+	Callback = function(New, Old)
+		WallHack.Visuals.ChamsSettings.EntireBody = New
+	end
+}).Default = WallHack.Visuals.ChamsSettings.EntireBody
+
+ChamsSettings:AddSlider({
+	Name = "Transparency",
+	Value = WallHack.Visuals.ChamsSettings.Transparency,
+	Callback = function(New, Old)
+		WallHack.Visuals.ChamsSettings.Transparency = New
+	end,
+	Min = 0,
+	Max = 1,
+	Decimals = 2
+}).Default = WallHack.Visuals.ChamsSettings.Transparency
+
+ChamsSettings:AddSlider({
+	Name = "Thickness",
+	Value = WallHack.Visuals.ChamsSettings.Thickness,
+	Callback = function(New, Old)
+		WallHack.Visuals.ChamsSettings.Thickness = New
+	end,
+	Min = 0,
+	Max = 3
+}).Default = WallHack.Visuals.ChamsSettings.Thickness
+
+ChamsSettings:AddColorpicker({
+	Name = "Color",
+	Value = WallHack.Visuals.ChamsSettings.Color,
+	Callback = function(New, Old)
+		WallHack.Visuals.ChamsSettings.Color = New
+	end
+}).Default = WallHack.Visuals.ChamsSettings.Color
+
 TracersSettings:AddToggle({
 	Name = "Enabled",
 	Value = WallHack.Visuals.TracersSettings.Enabled,
@@ -820,8 +877,8 @@ FunctionsSection:AddButton({
 FunctionsSection:AddButton({
 	Name = "Restart",
 	Callback = function()
-	   Aimbot.Functions:Restart()
-	   WallHack.Functions:Restart()
+		Aimbot.Functions:Restart()
+		WallHack.Functions:Restart()
 	end
 })
 
