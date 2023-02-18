@@ -12,7 +12,9 @@ Press ***Right Shift*** to open/close the GUI. You can also change this key by p
 [1]  ![image](https://user-images.githubusercontent.com/76539058/216461749-8de58ff3-4c6c-4ebf-b91b-0330d5d20782.png) [2]  ![image](https://user-images.githubusercontent.com/76539058/216462036-03bab9fa-6a52-445f-a328-93f17def81e4.png)
 #
 ## Update Log *(DD/MM/YYYY)*
-- [02/02/2023] - First release - V1.0
+- [02/02/2023] - Release
+- [16/02/2023] - Added new "Health Bar" visual, fixed bugs, "Wall Hack" module optimization, added the ability for the ESP to show equipped tools
+- [18/02/2023] - Added new "Chams" visual, "Aimbot" module optimization & bug fixes
 ## Script
 Load the script by copying it from [here](https://github.com/Exunys/AirHub/blob/main/AirHub.lua) or by executing the code below.
 ```lua
