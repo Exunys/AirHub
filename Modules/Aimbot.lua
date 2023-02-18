@@ -8,7 +8,7 @@
 
 --// Cache
 
-local pcall, getgenv, next, setmetatable, Vector2new, CFramenew, Color3fromRGB, stringupper, mousemoverel = pcall, getgenv, next, setmetatable, Vector2.new, CFrame.new, Color3.fromRGB, string.upper, mousemoverel or (Input and Input.MouseMove)
+local pcall, getgenv, next, setmetatable, Vector2new, CFramenew, Color3fromRGB, Drawingnew, TweenInfonew, stringupper, mousemoverel = pcall, getgenv, next, setmetatable, Vector2.new, CFrame.new, Color3.fromRGB, Drawing.new, TweenInfo.new, string.upper, mousemoverel or (Input and Input.MouseMove)
 
 --// Launching checks
 
@@ -55,7 +55,7 @@ getgenv().AirHub.Aimbot = {
 		Filled = false
 	},
 
-	FOVCircle = Drawing.new("Circle")
+	FOVCircle = Drawingnew("Circle")
 }
 
 local Environment = getgenv().AirHub.Aimbot
@@ -68,9 +68,12 @@ end
 
 local function CancelLock()
 	Environment.Locked = nil
-	if Animation then Animation:Cancel() end
 	Environment.FOVCircle.Color = Environment.FOVSettings.Color
 	UserInputService.MouseDeltaSensitivity = OriginalSensitivity
+
+	if Animation then
+		Animation:Cancel()
+	end
 end
 
 local function GetClosestPlayer()
@@ -124,7 +127,7 @@ local function Load()
 					mousemoverel((Vector.X - UserInputService:GetMouseLocation().X) * Environment.Settings.ThirdPersonSensitivity, (Vector.Y - UserInputService:GetMouseLocation().Y) * Environment.Settings.ThirdPersonSensitivity)
 				else
 					if Environment.Settings.Sensitivity > 0 then
-						Animation = TweenService:Create(Camera, TweenInfo.new(Environment.Settings.Sensitivity, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {CFrame = CFramenew(Camera.CFrame.Position, Environment.Locked.Character[Environment.Settings.LockPart].Position)})
+						Animation = TweenService:Create(Camera, TweenInfonew(Environment.Settings.Sensitivity, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {CFrame = CFramenew(Camera.CFrame.Position, Environment.Locked.Character[Environment.Settings.LockPart].Position)})
 						Animation:Play()
 					else
 						Camera.CFrame = CFramenew(Camera.CFrame.Position, Environment.Locked.Character[Environment.Settings.LockPart].Position)
@@ -141,21 +144,7 @@ local function Load()
 	ServiceConnections.InputBeganConnection = UserInputService.InputBegan:Connect(function(Input)
 		if not Typing then
 			pcall(function()
-				if Input.KeyCode == Enum.KeyCode[#Environment.Settings.TriggerKey == 1 and stringupper(Environment.Settings.TriggerKey) or Environment.Settings.TriggerKey] then
-					if Environment.Settings.Toggle then
-						Running = not Running
-
-						if not Running then
-							CancelLock()
-						end
-					else
-						Running = true
-					end
-				end
-			end)
-
-			pcall(function()
-				if Input.UserInputType == Enum.UserInputType[Environment.Settings.TriggerKey] then
+				if Input.UserInputType == Enum.UserInputType.Keyboard and Input.KeyCode == Enum.KeyCode[#Environment.Settings.TriggerKey == 1 and stringupper(Environment.Settings.TriggerKey) or Environment.Settings.TriggerKey] or Input.UserInputType == Enum.UserInputType[Environment.Settings.TriggerKey] then
 					if Environment.Settings.Toggle then
 						Running = not Running
 
@@ -174,13 +163,7 @@ local function Load()
 		if not Typing then
 			if not Environment.Settings.Toggle then
 				pcall(function()
-					if Input.KeyCode == Enum.KeyCode[#Environment.Settings.TriggerKey == 1 and stringupper(Environment.Settings.TriggerKey) or Environment.Settings.TriggerKey] then
-						Running = false; CancelLock()
-					end
-				end)
-
-				pcall(function()
-					if Input.UserInputType == Enum.UserInputType[Environment.Settings.TriggerKey] then
+					if Input.UserInputType == Enum.UserInputType.Keyboard and Input.KeyCode == Enum.KeyCode[#Environment.Settings.TriggerKey == 1 and stringupper(Environment.Settings.TriggerKey) or Environment.Settings.TriggerKey] or Input.UserInputType == Enum.UserInputType[Environment.Settings.TriggerKey] then
 						Running = false; CancelLock()
 					end
 				end)
