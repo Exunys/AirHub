@@ -808,6 +808,16 @@ CrosshairSettings:AddSlider({
 	Max = 20
 }).Default = WallHack.Crosshair.Settings.GapSize
 
+CrosshairSettings:AddSlider({
+	Name = "Rotation (Degrees)",
+	Value = WallHack.Crosshair.Settings.Rotation,
+	Callback = function(New, Old)
+		WallHack.Crosshair.Settings.Rotation = New
+	end,
+	Min = -180,
+	Max = 180
+}).Default = WallHack.Crosshair.Settings.Rotation
+
 CrosshairSettings:AddDropdown({
 	Name = "Position",
 	Value = WallHack.Crosshair.Settings.Type == 1 and "Mouse" or "Center",
