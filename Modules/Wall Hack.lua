@@ -350,7 +350,7 @@ local Visuals = {
 
 		local OldEntireBody = Environment.Visuals.ChamsSettings.EntireBody
 
-		PlayerTable.Connections.Chams = RunService.RenderStepped:Connect(function()
+		UpdateRig(); PlayerTable.Connections.Chams = RunService.RenderStepped:Connect(function()
 			if Environment.Visuals.ChamsSettings.Enabled then
 				for i, v in next, PlayerTable.Chams do
 					if Environment.Visuals.ChamsSettings.EntireBody ~= OldEntireBody then
