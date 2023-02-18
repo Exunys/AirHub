@@ -306,6 +306,16 @@ local Visuals = {
 		local PlayerTable = GetPlayerTable(Player)
 
 		local function UpdateRig()
+			for _, v in next, PlayerTable.Chams do
+				for i = 1, 6 do
+					local Quad = v["Quad"..tostring(i)]
+
+					if Quad and Quad.Remove then
+						Quad:Remove()
+					end
+				end
+			end
+
 			if PlayerTable.RigType == "R15" then
 				if not Environment.Visuals.ChamsSettings.EntireBody then
 					PlayerTable.Chams = {
@@ -336,14 +346,10 @@ local Visuals = {
 					["Right Leg"] = {}
 				}
 			end
-			
+
 			for _, v in next, PlayerTable.Chams do
 				for i = 1, 6 do
-					if v["Quad"..tostring(i)] and v["Quad"..tostring(i)].Remove then
-						v["Quad"..tostring(i)]:Remove()
-					else
-						v["Quad"..tostring(i)] = Drawingnew("Quad")
-					end
+					v["Quad"..tostring(i)] = Drawingnew("Quad")
 				end
 			end
 		end
@@ -352,11 +358,11 @@ local Visuals = {
 
 		UpdateRig(); PlayerTable.Connections.Chams = RunService.RenderStepped:Connect(function()
 			if Environment.Visuals.ChamsSettings.Enabled then
-				for i, v in next, PlayerTable.Chams do
-					if Environment.Visuals.ChamsSettings.EntireBody ~= OldEntireBody then
-						UpdateRig(); OldEntireBody = Environment.Visuals.ChamsSettings.EntireBody
-					end
+				if Environment.Visuals.ChamsSettings.EntireBody ~= OldEntireBody then
+					UpdateRig(); OldEntireBody = Environment.Visuals.ChamsSettings.EntireBody
+				end
 
+				for i, v in next, PlayerTable.Chams do
 					UpdateCham(Player.Character:WaitForChild(i, 1 / 0), v)
 				end
 			end
