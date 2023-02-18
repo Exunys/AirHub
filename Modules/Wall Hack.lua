@@ -8,7 +8,7 @@
 
 --// Cache
 
-local next, tostring, pcall, getgenv, setmetatable, mathfloor, mathabs, wait = next, tostring, pcall, getgenv, setmetatable, math.floor, math.abs, task.wait
+local select, next, tostring, pcall, getgenv, setmetatable, mathfloor, mathabs, wait = select, next, tostring, pcall, getgenv, setmetatable, math.floor, math.abs, task.wait
 local WorldToViewportPoint, Vector2new, Vector3new, Vector3zero, CFramenew, Drawingnew, Color3fromRGB = nil, Vector2.new, Vector3.new, Vector3.zero, CFrame.new, Drawing.new, Color3.fromRGB
 
 --// Launching checks
@@ -37,6 +37,15 @@ getgenv().AirHub.WallHack = {
 	},
 
 	Visuals = {
+		ChamsSettings = {
+			Enabled = false,
+			Color = Color3fromRGB(255, 255, 255),
+			Transparency = 0.2,
+			Thickness = 0,
+			Filled = true,
+			EntireBody = false -- For R15, keep false to prevent lag
+		},
+
 		ESPSettings = {
 			Enabled = true,
 			TextColor = Color3fromRGB(255, 255, 255),
@@ -61,7 +70,7 @@ getgenv().AirHub.WallHack = {
 
 		BoxSettings = {
 			Enabled = true,
-			Type = 1; -- 1 - 3D; 2 - 2D;
+			Type = 1; -- 1 - 3D; 2 - 2D
 			Color = Color3fromRGB(255, 255, 255),
 			Transparency = 0.7,
 			Thickness = 1,
@@ -134,6 +143,20 @@ local function GetPlayerTable(Player)
 	end
 end
 
+local function AssignRigType(Player)
+	local PlayerTable = GetPlayerTable(Player)
+
+	repeat wait(0) until Player.Character
+
+	if Player.Character:FindFirstChild("Torso") and not Player.Character:FindFirstChild("LowerTorso") then
+		PlayerTable.RigType = "R6"
+	elseif Player.Character:FindFirstChild("LowerTorso") and not Player.Character:FindFirstChild("Torso") then
+		PlayerTable.RigType = "R15"
+	else
+		repeat AssignRigType(Player) until PlayerTable.RigType
+	end
+end
+
 local function InitChecks(Player)
 	local PlayerTable = GetPlayerTable(Player)
 
@@ -157,9 +180,177 @@ local function InitChecks(Player)
 	end)
 end
 
+local function UpdateCham(Part, Cham)
+	local CorFrame, PartSize = Part.CFrame, Part.Size / 2
+
+	if select(2, WorldToViewportPoint(CorFrame * CFramenew(PartSize.X / 2,  PartSize.Y / 2, PartSize.Z / 2).Position)) then
+
+		--// Quad 1 - Front
+
+		Cham.Quad1.Transparency = Environment.Visuals.ChamsSettings.Transparency
+		Cham.Quad1.Color = Environment.Visuals.ChamsSettings.Color
+		Cham.Quad1.Thickness = Environment.Visuals.ChamsSettings.Thickness
+		Cham.Quad1.Filled = Environment.Visuals.ChamsSettings.Filled
+		Cham.Quad1.Visible = Environment.Visuals.ChamsSettings.Enabled
+
+		local PosTopLeft = WorldToViewportPoint(CorFrame * CFramenew(PartSize.X,  PartSize.Y, PartSize.Z).Position)
+		local PosTopRight = WorldToViewportPoint(CorFrame * CFramenew(-PartSize.X,  PartSize.Y, PartSize.Z).Position)
+		local PosBottomLeft = WorldToViewportPoint(CorFrame * CFramenew(PartSize.X, -PartSize.Y, PartSize.Z).Position)
+		local PosBottomRight = WorldToViewportPoint(CorFrame * CFramenew(-PartSize.X, -PartSize.Y, PartSize.Z).Position)
+
+		Cham.Quad1.PointA = Vector2new(PosTopLeft.X, PosTopLeft.Y)
+		Cham.Quad1.PointB = Vector2new(PosBottomLeft.X, PosBottomLeft.Y)
+		Cham.Quad1.PointC = Vector2new(PosBottomRight.X, PosBottomRight.Y)
+		Cham.Quad1.PointD = Vector2new(PosTopRight.X, PosTopRight.Y)
+
+		--// Quad 2 - Back
+
+		Cham.Quad2.Transparency = Environment.Visuals.ChamsSettings.Transparency
+		Cham.Quad2.Color = Environment.Visuals.ChamsSettings.Color
+		Cham.Quad2.Thickness = Environment.Visuals.ChamsSettings.Thickness
+		Cham.Quad2.Filled = Environment.Visuals.ChamsSettings.Filled
+		Cham.Quad2.Visible = Environment.Visuals.ChamsSettings.Enabled
+
+		local PosTopLeft2 = WorldToViewportPoint(CorFrame * CFramenew(PartSize.X,  PartSize.Y, -PartSize.Z).Position)
+		local PosTopRight2 = WorldToViewportPoint(CorFrame * CFramenew(-PartSize.X,  PartSize.Y, -PartSize.Z).Position)
+		local PosBottomLeft2 = WorldToViewportPoint(CorFrame * CFramenew(PartSize.X, -PartSize.Y, -PartSize.Z).Position)
+		local PosBottomRight2 = WorldToViewportPoint(CorFrame * CFramenew(-PartSize.X, -PartSize.Y, -PartSize.Z).Position)
+
+		Cham.Quad2.PointA = Vector2new(PosTopLeft2.X, PosTopLeft2.Y)
+		Cham.Quad2.PointB = Vector2new(PosBottomLeft2.X, PosBottomLeft2.Y)
+		Cham.Quad2.PointC = Vector2new(PosBottomRight2.X, PosBottomRight2.Y)
+		Cham.Quad2.PointD = Vector2new(PosTopRight2.X, PosTopRight2.Y)
+
+		--// Quad 3 - Top
+
+		Cham.Quad3.Transparency = Environment.Visuals.ChamsSettings.Transparency
+		Cham.Quad3.Color = Environment.Visuals.ChamsSettings.Color
+		Cham.Quad3.Thickness = Environment.Visuals.ChamsSettings.Thickness
+		Cham.Quad3.Filled = Environment.Visuals.ChamsSettings.Filled
+		Cham.Quad3.Visible = Environment.Visuals.ChamsSettings.Enabled
+
+		local PosTopLeft3 = WorldToViewportPoint(CorFrame * CFramenew(PartSize.X,  PartSize.Y, PartSize.Z).Position)
+		local PosTopRight3 = WorldToViewportPoint(CorFrame * CFramenew(-PartSize.X, PartSize.Y, PartSize.Z).Position)
+		local PosBottomLeft3 = WorldToViewportPoint(CorFrame * CFramenew(PartSize.X, PartSize.Y, -PartSize.Z).Position)
+		local PosBottomRight3 = WorldToViewportPoint(CorFrame * CFramenew(-PartSize.X, PartSize.Y, -PartSize.Z).Position)
+
+		Cham.Quad3.PointA = Vector2new(PosTopLeft3.X, PosTopLeft3.Y)
+		Cham.Quad3.PointB = Vector2new(PosBottomLeft3.X, PosBottomLeft3.Y)
+		Cham.Quad3.PointC = Vector2new(PosBottomRight3.X, PosBottomRight3.Y)
+		Cham.Quad3.PointD = Vector2new(PosTopRight3.X, PosTopRight3.Y)
+
+		--// Quad 4 - Bottom
+
+		Cham.Quad4.Transparency = Environment.Visuals.ChamsSettings.Transparency
+		Cham.Quad4.Color = Environment.Visuals.ChamsSettings.Color
+		Cham.Quad4.Thickness = Environment.Visuals.ChamsSettings.Thickness
+		Cham.Quad4.Filled = Environment.Visuals.ChamsSettings.Filled
+		Cham.Quad4.Visible = Environment.Visuals.ChamsSettings.Enabled
+
+		local PosTopLeft4 = WorldToViewportPoint(CorFrame * CFramenew(PartSize.X,  -PartSize.Y, PartSize.Z).Position)
+		local PosTopRight4 = WorldToViewportPoint(CorFrame * CFramenew(-PartSize.X, -PartSize.Y, PartSize.Z).Position)
+		local PosBottomLeft4 = WorldToViewportPoint(CorFrame * CFramenew(PartSize.X, -PartSize.Y, -PartSize.Z).Position)
+		local PosBottomRight4 = WorldToViewportPoint(CorFrame * CFramenew(-PartSize.X, -PartSize.Y, -PartSize.Z).Position)
+
+		Cham.Quad4.PointA = Vector2new(PosTopLeft4.X, PosTopLeft4.Y)
+		Cham.Quad4.PointB = Vector2new(PosBottomLeft4.X, PosBottomLeft4.Y)
+		Cham.Quad4.PointC = Vector2new(PosBottomRight4.X, PosBottomRight4.Y)
+		Cham.Quad4.PointD = Vector2new(PosTopRight4.X, PosTopRight4.Y)
+
+		--// Quad 5 - Right
+
+		Cham.Quad5.Transparency = Environment.Visuals.ChamsSettings.Transparency
+		Cham.Quad5.Color = Environment.Visuals.ChamsSettings.Color
+		Cham.Quad5.Thickness = Environment.Visuals.ChamsSettings.Thickness
+		Cham.Quad5.Filled = Environment.Visuals.ChamsSettings.Filled
+		Cham.Quad5.Visible = Environment.Visuals.ChamsSettings.Enabled
+
+		local PosTopLeft5 = WorldToViewportPoint(CorFrame * CFramenew(PartSize.X,  PartSize.Y, PartSize.Z).Position)
+		local PosTopRight5 = WorldToViewportPoint(CorFrame * CFramenew(PartSize.X, PartSize.Y, -PartSize.Z).Position)
+		local PosBottomLeft5 = WorldToViewportPoint(CorFrame * CFramenew(PartSize.X, -PartSize.Y, PartSize.Z).Position)
+		local PosBottomRight5 = WorldToViewportPoint(CorFrame * CFramenew(PartSize.X, -PartSize.Y, -PartSize.Z).Position)
+
+		Cham.Quad5.PointA = Vector2new(PosTopLeft5.X, PosTopLeft5.Y)
+		Cham.Quad5.PointB = Vector2new(PosBottomLeft5.X, PosBottomLeft5.Y)
+		Cham.Quad5.PointC = Vector2new(PosBottomRight5.X, PosBottomRight5.Y)
+		Cham.Quad5.PointD = Vector2new(PosTopRight5.X, PosTopRight5.Y)
+
+		--// Quad 6 - Left
+
+		Cham.Quad6.Transparency = Environment.Visuals.ChamsSettings.Transparency
+		Cham.Quad6.Color = Environment.Visuals.ChamsSettings.Color
+		Cham.Quad6.Thickness = Environment.Visuals.ChamsSettings.Thickness
+		Cham.Quad6.Filled = Environment.Visuals.ChamsSettings.Filled
+		Cham.Quad6.Visible = Environment.Visuals.ChamsSettings.Enabled
+
+		local PosTopLeft6 = WorldToViewportPoint(CorFrame * CFramenew(-PartSize.X,  PartSize.Y, PartSize.Z).Position)
+		local PosTopRight6 = WorldToViewportPoint(CorFrame * CFramenew(-PartSize.X, PartSize.Y, -PartSize.Z).Position)
+		local PosBottomLeft6 = WorldToViewportPoint(CorFrame * CFramenew(-PartSize.X, -PartSize.Y, PartSize.Z).Position)
+		local PosBottomRight6 = WorldToViewportPoint(CorFrame * CFramenew(-PartSize.X, -PartSize.Y, -PartSize.Z).Position)
+
+		Cham.Quad6.PointA = Vector2new(PosTopLeft6.X, PosTopLeft6.Y)
+		Cham.Quad6.PointB = Vector2new(PosBottomLeft6.X, PosBottomLeft6.Y)
+		Cham.Quad6.PointC = Vector2new(PosBottomRight6.X, PosBottomRight6.Y)
+		Cham.Quad6.PointD = Vector2new(PosTopRight6.X, PosTopRight6.Y)
+	else
+		for i = 1, 6 do
+			Cham["Quad"..tostring(i)].Visible = false
+		end
+	end
+end
+
 --// Visuals
 
 local Visuals = {
+	AddChams = function(Player)
+		local PlayerTable = GetPlayerTable(Player)
+
+		if PlayerTable.RigType == "R15" then
+			if not Environment.Visuals.ChamsSettings.EntireBody then
+				PlayerTable.Chams = {
+					Head = {},
+					UpperTorso = {},
+					LeftLowerArm = {}, LeftUpperArm = {},
+					RightLowerArm = {}, RightUpperArm = {},
+					LeftLowerLeg = {}, LeftUpperLeg = {},
+					RightLowerLeg = {}, RightUpperLeg = {}
+				}
+			else
+				PlayerTable.Chams = {
+					Head = {},
+					UpperTorso = {}, LowerTorso = {},
+					LeftLowerArm = {}, LeftUpperArm = {}, LeftHand = {},
+					RightLowerArm = {}, RightUpperArm = {}, RightHand = {},
+					LeftLowerLeg = {}, LeftUpperLeg = {}, LeftFoot = {},
+					RightLowerLeg = {}, RightUpperLeg = {}, RightFoot = {}
+				}
+			end
+		elseif PlayerTable.RigType == "R6" then
+			PlayerTable.Chams = {
+				Head = {},
+				Torso = {},
+				["Left Arm"] = {},
+				["Right Arm"] = {},
+				["Left Leg"] = {},
+				["Right Leg"] = {}
+			}
+		end
+
+		for _, v in next, PlayerTable.Chams do
+			for i = 1, 6 do
+				v["Quad"..tostring(i)] = Drawingnew("Quad")
+			end
+		end
+
+		PlayerTable.Connections.Chams = RunService.RenderStepped:Connect(function()
+			if Environment.Visuals.ChamsSettings.Enabled then
+				for i, v in next, PlayerTable.Chams do
+					UpdateCham(Player.Character:WaitForChild(i, 1 / 0), v)
+				end
+			end
+		end)
+	end,
+
 	AddESP = function(Player)
 		local PlayerTable = GetPlayerTable(Player)
 
@@ -183,8 +374,6 @@ local Visuals = {
 						PlayerTable.ESP.Transparency = Environment.Visuals.ESPSettings.TextTransparency
 						PlayerTable.ESP.Font = Environment.Visuals.ESPSettings.TextFont
 
-						PlayerTable.ESP.Position = Vector2new(Vector.X, Vector.Y - Environment.Visuals.ESPSettings.Offset)
-
 						local Parts, Content, Tool = {
 							Health = "("..tostring(mathfloor(Player.Character.Humanoid.Health))..")",
 							Distance = "["..tostring(mathfloor((Player.Character.HumanoidRootPart.Position or Vector3zero - (LocalPlayer.Character.HumanoidRootPart.Position or Vector3zero)).Magnitude)).."]",
@@ -204,6 +393,7 @@ local Visuals = {
 						end
 
 						PlayerTable.ESP.Text = (Tool and "["..Tool.Name.."]\n" or "")..Content
+						PlayerTable.ESP.Position = Vector2new(Vector.X, Vector.Y - Environment.Visuals.ESPSettings.Offset - (Tool and 10 or 0))
 					end
 				else
 					PlayerTable.ESP.Visible = false
@@ -220,9 +410,13 @@ local Visuals = {
 		PlayerTable.Tracer = Drawingnew("Line")
 
 		PlayerTable.Connections.Tracer = RunService.RenderStepped:Connect(function()
-			if Player.Character and Player.Character:FindFirstChildOfClass("Humanoid") and Player.Character:FindFirstChild("HumanoidRootPart") and Environment.Settings.Enabled then
+			if Player.Character and Player.Character:FindFirstChildOfClass("Humanoid") and Player.Character:FindFirstChild("HumanoidRootPart") and Player.Character:FindFirstChild("Head") and Environment.Settings.Enabled then
 				local HRPCFrame, HRPSize = Player.Character.HumanoidRootPart.CFrame, Player.Character.HumanoidRootPart.Size
-				local Vector, OnScreen = WorldToViewportPoint(HRPCFrame * CFramenew(0, -HRPSize.Y - 0.5, 0).Position)
+				local _3DVector, OnScreen = WorldToViewportPoint(HRPCFrame * CFramenew(0, -HRPSize.Y - 0.5, 0).Position)
+				local _2DVector = WorldToViewportPoint(Player.Character.HumanoidRootPart.Position)
+
+				local HeadOffset = WorldToViewportPoint(Player.Character.Head.Position + Vector3new(0, 0.5, 0))
+				local LegsOffset = WorldToViewportPoint(Player.Character.HumanoidRootPart.Position - Vector3new(0, 1.5, 0))
 
 				if OnScreen and Environment.Visuals.TracersSettings.Enabled then
 					if Environment.Visuals.TracersSettings.Enabled then
@@ -233,7 +427,7 @@ local Visuals = {
 							PlayerTable.Tracer.Color = Environment.Visuals.TracersSettings.Color
 							PlayerTable.Tracer.Transparency = Environment.Visuals.TracersSettings.Transparency
 
-							PlayerTable.Tracer.To = Vector2new(Vector.X, Vector.Y)
+							PlayerTable.Tracer.To = Environment.Visuals.BoxSettings.Type == 1 and Vector2new(_3DVector.X, _3DVector.Y) or Vector2new(_2DVector.X, _2DVector.Y - (HeadOffset.Y - LegsOffset.Y) * 0.75)
 
 							if Environment.Visuals.TracersSettings.Type == 1 then
 								PlayerTable.Tracer.From = Vector2new(Camera.ViewportSize.X / 2, Camera.ViewportSize.Y)
@@ -559,8 +753,10 @@ local function Wrap(Player)
 
 		if not Table then
 			Environment.WrappedPlayers[#Environment.WrappedPlayers + 1] = Value
+			AssignRigType(Player)
 			InitChecks(Player)
 
+			Visuals.AddChams(Player)
 			Visuals.AddESP(Player)
 			Visuals.AddTracer(Player)
 			Visuals.AddBox(Player)
@@ -593,14 +789,18 @@ local function UnWrap(Player)
 		end)
 
 		for _, v in next, Table.Box do
-			if type(v.Remove) == "function" then
+			if not v.Remove then
+				continue
+			else
 				v:Remove()
 			end
 		end
 
 		for _, v in next, Table.Chams do
 			for _, v2 in next, v do
-				if type(v2.Remove) == "function" then
+				if not v2.Remove then
+					continue
+				else
 					v2:Remove()
 				end
 			end
@@ -623,7 +823,7 @@ local function Load()
 			end
 		end
 
-		wait(60)
+		wait(30)
 	end)
 end
 
@@ -649,7 +849,7 @@ function Environment.Functions:Exit()
 	getgenv().AirHub.WallHack.Functions = nil
 	getgenv().AirHub.WallHack = nil
 
-	Load = nil; GetPlayerTable = nil; InitChecks = nil; Visuals = nil; Wrap = nil; UnWrap = nil
+	Load = nil; GetPlayerTable = nil; AssignRigType = nil; InitChecks = nil; UpdateCham = nil; Visuals = nil; Wrap = nil; UnWrap = nil
 end
 
 function Environment.Functions:Restart()
@@ -668,6 +868,15 @@ end
 
 function Environment.Functions:ResetSettings()
 	Environment.Visuals = {
+		ChamsSettings = {
+			Enabled = false,
+			Color = Color3fromRGB(255, 255, 255),
+			Transparency = 0.2,
+			Thickness = 0,
+			Filled = true,
+			EntireBody = false -- For R15, keep false to prevent lag
+		},
+
 		ESPSettings = {
 			Enabled = true,
 			TextColor = Color3fromRGB(255, 255, 255),
@@ -692,7 +901,7 @@ function Environment.Functions:ResetSettings()
 
 		BoxSettings = {
 			Enabled = true,
-			Type = 1; -- 1 - 3D; 2 - 2D;
+			Type = 1; -- 1 - 3D; 2 - 2D
 			Color = Color3fromRGB(255, 255, 255),
 			Transparency = 0.7,
 			Thickness = 1,
