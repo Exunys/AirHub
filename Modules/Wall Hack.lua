@@ -183,7 +183,7 @@ end
 local function UpdateCham(Part, Cham)
 	local CorFrame, PartSize = Part.CFrame, Part.Size / 2
 
-	if select(2, WorldToViewportPoint(CorFrame * CFramenew(PartSize.X / 2,  PartSize.Y / 2, PartSize.Z / 2).Position)) then
+	if select(2, WorldToViewportPoint(CorFrame * CFramenew(PartSize.X / 2,  PartSize.Y / 2, PartSize.Z / 2).Position)) and Environment.Visuals.ChamsSettings.Enabled then
 
 		--// Quad 1 - Front
 
@@ -305,46 +305,58 @@ local Visuals = {
 	AddChams = function(Player)
 		local PlayerTable = GetPlayerTable(Player)
 
-		if PlayerTable.RigType == "R15" then
-			if not Environment.Visuals.ChamsSettings.EntireBody then
+		local function UpdateRig()
+			if PlayerTable.RigType == "R15" then
+				if not Environment.Visuals.ChamsSettings.EntireBody then
+					PlayerTable.Chams = {
+						Head = {},
+						UpperTorso = {},
+						LeftLowerArm = {}, LeftUpperArm = {},
+						RightLowerArm = {}, RightUpperArm = {},
+						LeftLowerLeg = {}, LeftUpperLeg = {},
+						RightLowerLeg = {}, RightUpperLeg = {}
+					}
+				else
+					PlayerTable.Chams = {
+						Head = {},
+						UpperTorso = {}, LowerTorso = {},
+						LeftLowerArm = {}, LeftUpperArm = {}, LeftHand = {},
+						RightLowerArm = {}, RightUpperArm = {}, RightHand = {},
+						LeftLowerLeg = {}, LeftUpperLeg = {}, LeftFoot = {},
+						RightLowerLeg = {}, RightUpperLeg = {}, RightFoot = {}
+					}
+				end
+			elseif PlayerTable.RigType == "R6" then
 				PlayerTable.Chams = {
 					Head = {},
-					UpperTorso = {},
-					LeftLowerArm = {}, LeftUpperArm = {},
-					RightLowerArm = {}, RightUpperArm = {},
-					LeftLowerLeg = {}, LeftUpperLeg = {},
-					RightLowerLeg = {}, RightUpperLeg = {}
-				}
-			else
-				PlayerTable.Chams = {
-					Head = {},
-					UpperTorso = {}, LowerTorso = {},
-					LeftLowerArm = {}, LeftUpperArm = {}, LeftHand = {},
-					RightLowerArm = {}, RightUpperArm = {}, RightHand = {},
-					LeftLowerLeg = {}, LeftUpperLeg = {}, LeftFoot = {},
-					RightLowerLeg = {}, RightUpperLeg = {}, RightFoot = {}
+					Torso = {},
+					["Left Arm"] = {},
+					["Right Arm"] = {},
+					["Left Leg"] = {},
+					["Right Leg"] = {}
 				}
 			end
-		elseif PlayerTable.RigType == "R6" then
-			PlayerTable.Chams = {
-				Head = {},
-				Torso = {},
-				["Left Arm"] = {},
-				["Right Arm"] = {},
-				["Left Leg"] = {},
-				["Right Leg"] = {}
-			}
+			
+			for _, v in next, PlayerTable.Chams do
+				for i = 1, 6 do
+					if v["Quad"..tostring(i)] and v["Quad"..tostring(i)].Remove then
+						v["Quad"..tostring(i)]:Remove()
+					else
+						v["Quad"..tostring(i)] = Drawingnew("Quad")
+					end
+				end
+			end
 		end
 
-		for _, v in next, PlayerTable.Chams do
-			for i = 1, 6 do
-				v["Quad"..tostring(i)] = Drawingnew("Quad")
-			end
-		end
+		local OldEntireBody = Environment.Visuals.ChamsSettings.EntireBody
 
 		PlayerTable.Connections.Chams = RunService.RenderStepped:Connect(function()
 			if Environment.Visuals.ChamsSettings.Enabled then
 				for i, v in next, PlayerTable.Chams do
+					if Environment.Visuals.ChamsSettings.EntireBody ~= OldEntireBody then
+						UpdateRig(); OldEntireBody = Environment.Visuals.ChamsSettings.EntireBody
+					end
+
 					UpdateCham(Player.Character:WaitForChild(i, 1 / 0), v)
 				end
 			end
