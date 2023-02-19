@@ -699,7 +699,7 @@ local Visuals = {
 
 				--// Left Line
 
-				Environment.Crosshair.Parts.LeftLine.Visible = Environment.Crosshair.Settings.Enabled and Environment.Settings.Enabled
+				Environment.Crosshair.Parts.LeftLine.Visible = Environment.Crosshair.Settings.Enabled
 				Environment.Crosshair.Parts.LeftLine.Color = Environment.Crosshair.Settings.Color
 				Environment.Crosshair.Parts.LeftLine.Thickness = Environment.Crosshair.Settings.Thickness
 				Environment.Crosshair.Parts.LeftLine.Transparency = Environment.Crosshair.Settings.Transparency
@@ -709,7 +709,7 @@ local Visuals = {
 
 				--// Right Line
 
-				Environment.Crosshair.Parts.RightLine.Visible = Environment.Settings.Enabled
+				Environment.Crosshair.Parts.RightLine.Visible = Environment.Crosshair.Settings.Enabled
 				Environment.Crosshair.Parts.RightLine.Color = Environment.Crosshair.Settings.Color
 				Environment.Crosshair.Parts.RightLine.Thickness = Environment.Crosshair.Settings.Thickness
 				Environment.Crosshair.Parts.RightLine.Transparency = Environment.Crosshair.Settings.Transparency
@@ -720,7 +720,7 @@ local Visuals = {
 
 				--// Top Line
 
-				Environment.Crosshair.Parts.TopLine.Visible = Environment.Settings.Enabled
+				Environment.Crosshair.Parts.TopLine.Visible = Environment.Crosshair.Settings.Enabled
 				Environment.Crosshair.Parts.TopLine.Color = Environment.Crosshair.Settings.Color
 				Environment.Crosshair.Parts.TopLine.Thickness = Environment.Crosshair.Settings.Thickness
 				Environment.Crosshair.Parts.TopLine.Transparency = Environment.Crosshair.Settings.Transparency
@@ -730,7 +730,7 @@ local Visuals = {
 
 				--// Bottom Line
 
-				Environment.Crosshair.Parts.BottomLine.Visible = Environment.Settings.Enabled
+				Environment.Crosshair.Parts.BottomLine.Visible = Environment.Crosshair.Settings.Enabled
 				Environment.Crosshair.Parts.BottomLine.Color = Environment.Crosshair.Settings.Color
 				Environment.Crosshair.Parts.BottomLine.Thickness = Environment.Crosshair.Settings.Thickness
 				Environment.Crosshair.Parts.BottomLine.Transparency = Environment.Crosshair.Settings.Transparency
@@ -740,7 +740,7 @@ local Visuals = {
 
 				--// Center Dot
 
-				Environment.Crosshair.Parts.CenterDot.Visible = Environment.Settings.Enabled and Environment.Crosshair.Settings.CenterDot
+				Environment.Crosshair.Parts.CenterDot.Visible = Environment.Crosshair.Settings.Enabled and Environment.Crosshair.Settings.CenterDot
 				Environment.Crosshair.Parts.CenterDot.Color = Environment.Crosshair.Settings.CenterDotColor
 				Environment.Crosshair.Parts.CenterDot.Radius = Environment.Crosshair.Settings.CenterDotSize
 				Environment.Crosshair.Parts.CenterDot.Transparency = Environment.Crosshair.Settings.CenterDotTransparency
