@@ -358,13 +358,13 @@ local Visuals = {
 		local OldEntireBody = Environment.Visuals.ChamsSettings.EntireBody
 
 		UpdateRig(); PlayerTable.Connections.Chams = RunService.RenderStepped:Connect(function()
+			for i, v in next, PlayerTable.Chams do
+				UpdateCham(Player.Character:WaitForChild(i, 1 / 0), v)
+			end
+
 			if Environment.Visuals.ChamsSettings.Enabled then
 				if Environment.Visuals.ChamsSettings.EntireBody ~= OldEntireBody then
 					UpdateRig(); OldEntireBody = Environment.Visuals.ChamsSettings.EntireBody
-				end
-
-				for i, v in next, PlayerTable.Chams do
-					UpdateCham(Player.Character:WaitForChild(i, 1 / 0), v)
 				end
 			end
 		end)
