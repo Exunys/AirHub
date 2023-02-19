@@ -8,7 +8,7 @@
 
 --// Cache
 
-local select, next, tostring, pcall, getgenv, setmetatable, mathfloor, mathabs, mathcos, mathsin, wait = select, next, tostring, pcall, getgenv, setmetatable, math.floor, math.abs, math.cos, math.sin, task.wait
+local select, next, tostring, pcall, getgenv, setmetatable, mathfloor, mathabs, mathcos, mathsin, mathrad, wait = select, next, tostring, pcall, getgenv, setmetatable, math.floor, math.abs, math.cos, math.sin, math.rad, task.wait
 local WorldToViewportPoint, Vector2new, Vector3new, Vector3zero, CFramenew, Drawingnew, Color3fromRGB = nil, Vector2.new, Vector3.new, Vector3.zero, CFrame.new, Drawing.new, Color3.fromRGB
 
 --// Launching checks
@@ -704,8 +704,8 @@ local Visuals = {
 				Environment.Crosshair.Parts.LeftLine.Thickness = Environment.Crosshair.Settings.Thickness
 				Environment.Crosshair.Parts.LeftLine.Transparency = Environment.Crosshair.Settings.Transparency
 
-				Environment.Crosshair.Parts.LeftLine.From = Vector2new(AxisX - (mathcos(Environment.Crosshair.Settings.Rotation) * Environment.Crosshair.Settings.GapSize), AxisY - (mathsin(Environment.Crosshair.Settings.Rotation) * Environment.Crosshair.Settings.GapSize))
-				Environment.Crosshair.Parts.LeftLine.To = Vector2new(AxisX - (mathcos(Environment.Crosshair.Settings.Rotation) * (Environment.Crosshair.Settings.Size + Environment.Crosshair.Settings.GapSize)), AxisY - (mathsin(Environment.Crosshair.Settings.Rotation) * (Environment.Crosshair.Settings.Size + Environment.Crosshair.Settings.GapSize)))
+				Environment.Crosshair.Parts.LeftLine.From = Vector2new(AxisX - (mathcos(mathrad(Environment.Crosshair.Settings.Rotation)) * Environment.Crosshair.Settings.GapSize), AxisY - (mathsin(mathrad(Environment.Crosshair.Settings.Rotation)) * Environment.Crosshair.Settings.GapSize))
+				Environment.Crosshair.Parts.LeftLine.To = Vector2new(AxisX - (mathcos(mathrad(Environment.Crosshair.Settings.Rotation)) * (Environment.Crosshair.Settings.Size + Environment.Crosshair.Settings.GapSize)), AxisY - (mathsin(mathrad(Environment.Crosshair.Settings.Rotation)) * (Environment.Crosshair.Settings.Size + Environment.Crosshair.Settings.GapSize)))
 
 				--// Right Line
 
@@ -715,8 +715,8 @@ local Visuals = {
 				Environment.Crosshair.Parts.RightLine.Transparency = Environment.Crosshair.Settings.Transparency
 
 
-				Environment.Crosshair.Parts.RightLine.From = Vector2new(AxisX + (mathcos(Environment.Crosshair.Settings.Rotation) * Environment.Crosshair.Settings.GapSize), AxisY + (mathsin(Environment.Crosshair.Settings.Rotation) * Environment.Crosshair.Settings.GapSize))
-				Environment.Crosshair.Parts.RightLine.To = Vector2new(AxisX + (mathcos(Environment.Crosshair.Settings.Rotation) * (Environment.Crosshair.Settings.Size + Environment.Crosshair.Settings.GapSize)), AxisY + (mathsin(Environment.Crosshair.Settings.Rotation) * (Environment.Crosshair.Settings.Size + Environment.Crosshair.Settings.GapSize)))
+				Environment.Crosshair.Parts.RightLine.From = Vector2new(AxisX + (mathcos(mathrad(Environment.Crosshair.Settings.Rotation)) * Environment.Crosshair.Settings.GapSize), AxisY + (mathsin(mathrad(Environment.Crosshair.Settings.Rotation)) * Environment.Crosshair.Settings.GapSize))
+				Environment.Crosshair.Parts.RightLine.To = Vector2new(AxisX + (mathcos(mathrad(Environment.Crosshair.Settings.Rotation)) * (Environment.Crosshair.Settings.Size + Environment.Crosshair.Settings.GapSize)), AxisY + (mathsin(mathrad(Environment.Crosshair.Settings.Rotation)) * (Environment.Crosshair.Settings.Size + Environment.Crosshair.Settings.GapSize)))
 
 				--// Top Line
 
@@ -725,8 +725,8 @@ local Visuals = {
 				Environment.Crosshair.Parts.TopLine.Thickness = Environment.Crosshair.Settings.Thickness
 				Environment.Crosshair.Parts.TopLine.Transparency = Environment.Crosshair.Settings.Transparency
 
-				Environment.Crosshair.Parts.TopLine.From = Vector2new(AxisX - (mathsin(-Environment.Crosshair.Settings.Rotation) * Environment.Crosshair.Settings.GapSize), AxisY - (mathcos(-Environment.Crosshair.Settings.Rotation) * Environment.Crosshair.Settings.GapSize))
-				Environment.Crosshair.Parts.TopLine.To = Vector2new(AxisX - (mathsin(-Environment.Crosshair.Settings.Rotation) * (Environment.Crosshair.Settings.Size + Environment.Crosshair.Settings.GapSize)), AxisY - (mathcos(-Environment.Crosshair.Settings.Rotation) * (Environment.Crosshair.Settings.Size + Environment.Crosshair.Settings.GapSize)))
+				Environment.Crosshair.Parts.TopLine.From = Vector2new(AxisX - (mathsin(mathrad(-Environment.Crosshair.Settings.Rotation)) * Environment.Crosshair.Settings.GapSize), AxisY - (mathcos(mathrad(-Environment.Crosshair.Settings.Rotation)) * Environment.Crosshair.Settings.GapSize))
+				Environment.Crosshair.Parts.TopLine.To = Vector2new(AxisX - (mathsin(mathrad(-Environment.Crosshair.Settings.Rotation)) * (Environment.Crosshair.Settings.Size + Environment.Crosshair.Settings.GapSize)), AxisY - (mathcos(mathrad(-Environment.Crosshair.Settings.Rotation)) * (Environment.Crosshair.Settings.Size + Environment.Crosshair.Settings.GapSize)))
 
 				--// Bottom Line
 
@@ -735,8 +735,8 @@ local Visuals = {
 				Environment.Crosshair.Parts.BottomLine.Thickness = Environment.Crosshair.Settings.Thickness
 				Environment.Crosshair.Parts.BottomLine.Transparency = Environment.Crosshair.Settings.Transparency
 
-				Environment.Crosshair.Parts.BottomLine.From = Vector2new(AxisX + (mathsin(-Environment.Crosshair.Settings.Rotation) * Environment.Crosshair.Settings.GapSize), AxisY + (mathcos(-Environment.Crosshair.Settings.Rotation) * Environment.Crosshair.Settings.GapSize))
-				Environment.Crosshair.Parts.BottomLine.To = Vector2new(AxisX + (mathsin(-Environment.Crosshair.Settings.Rotation) * (Environment.Crosshair.Settings.Size + Environment.Crosshair.Settings.GapSize)), AxisY + (mathcos(-Environment.Crosshair.Settings.Rotation) * (Environment.Crosshair.Settings.Size + Environment.Crosshair.Settings.GapSize)))
+				Environment.Crosshair.Parts.BottomLine.From = Vector2new(AxisX + (mathsin(mathrad(-Environment.Crosshair.Settings.Rotation)) * Environment.Crosshair.Settings.GapSize), AxisY + (mathcos(mathrad(-Environment.Crosshair.Settings.Rotation)) * Environment.Crosshair.Settings.GapSize))
+				Environment.Crosshair.Parts.BottomLine.To = Vector2new(AxisX + (mathsin(mathrad(-Environment.Crosshair.Settings.Rotation)) * (Environment.Crosshair.Settings.Size + Environment.Crosshair.Settings.GapSize)), AxisY + (mathcos(mathrad(-Environment.Crosshair.Settings.Rotation)) * (Environment.Crosshair.Settings.Size + Environment.Crosshair.Settings.GapSize)))
 
 				--// Center Dot
 
