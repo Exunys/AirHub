@@ -1,6 +1,7 @@
 # ![AirHub](https://user-images.githubusercontent.com/76539058/216460149-e769db5c-cd6e-4b16-9c76-94bf88c0a3bb.png) [![Visitors](https://visitor-badge.laobi.icu/badge?page_id=Exunys.AirHub&right_color=purple)](https://github.com/Exunys/AirHub)
 ![Banner](https://user-images.githubusercontent.com/76539058/216463182-fe248740-3aca-4ec4-853e-028ec6b6b71b.png)
 #
+## ❗❗❗ This script is discontinued, check out the new [AirHub V2](https://github.com/Exunys/AirHub-V2)
 ## Information
 This script uses improved versions of Exunys' [Aimbot V2](https://github.com/Exunys/Aimbot-V2) and [Wall Hack](https://github.com/Exunys/Wall-Hack) scripts which settings are finally made configurable by a GUI.
 
